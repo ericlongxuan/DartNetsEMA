@@ -1,0 +1,256 @@
+{  
+   "mVersion":0,
+   "EMAScheduleList":[  
+      {  
+         "Random":"daily",
+         "HourOfDay":0,
+         "Minute":0,
+         "Second":0,
+         "EMADef":{  
+            "Name":"StressMeterEMA",
+            "Prompt":"",
+            "RandomGroup":false,
+            "QuestionGroup":[  
+               [  
+                  {  
+                     "QuestionType":0,
+                     "Name":"StressMeter",
+                     "QuestionText":"",
+                     "Options":[  
+
+                     ],
+                     "QuestionActivityType":1,
+                     "EMAActivity":"PSM"
+                  }
+               ]
+            ]
+         },
+         "DaysOfWeek":[  
+
+         ]
+      },
+      {  
+         "Random":"weekly",
+         "HourOfDay":0,
+         "Minute":0,
+         "Second":0,
+         "EMADef":{  
+            "Name":"PBSWeeklyEMA",
+            "Prompt":"",
+            "RandomGroup":true,
+            "QuestionGroup":[  
+               [  
+                  {  
+                     "QuestionType":0,
+                     "Name":"PAM",
+                     "QuestionText":"",
+                     "Options":[  
+
+                     ],
+                     "QuestionActivityType":1,
+                     "EMAActivity":"PAM"
+                  }
+               ],
+               [  
+                  {  
+                     "QuestionType":0,
+                     "Name":"SSE3-1",
+                     "QuestionText":"I feel self-conscious.",
+                     "Options":[  
+                        "Not at All",
+                        "A Little Bit",
+                        "Somewhat",
+                        "Very Much",
+                        "Extremely"
+                     ],
+                     "QuestionActivityType":0,
+                     "EMAActivity":""
+                  },
+                  {  
+                     "QuestionType":0,
+                     "Name":"SSE3-2",
+                     "QuestionText":"I feel unattractive.",
+                     "Options":[  
+                        "Not at All",
+                        "A Little Bit",
+                        "Somewhat",
+                        "Very Much",
+                        "Extremely"
+                     ],
+                     "QuestionActivityType":0,
+                     "EMAActivity":""
+                  },
+                  {  
+                     "QuestionType":0,
+                     "Name":"SSE3-3",
+                     "QuestionText":"I feel that I have less scholastic ability right now than others.",
+                     "Options":[  
+                        "Not at All",
+                        "A Little Bit",
+                        "Somewhat",
+                        "Very Much",
+                        "Extremely"
+                     ],
+                     "QuestionActivityType":0,
+                     "EMAActivity":""
+                  },
+                  {  
+                     "QuestionType":0,
+                     "Name":"SSE3-4",
+                     "QuestionText":"Overall, I feel good about myself right now.",
+                     "Options":[  
+                        "Not at All",
+                        "A Little Bit",
+                        "Somewhat",
+                        "Very Much",
+                        "Extremely"
+                     ],
+                     "QuestionActivityType":0,
+                     "EMAActivity":""
+                  }
+               ],
+               [  
+                  {  
+                     "QuestionType":0,
+                     "Name":"PHQ4-1",
+                     "QuestionText":"Over the last 2 weeks, how often have you been bothered by the following problems?\n\n\nFeeling nervous, anxious or on edge",
+                     "Options":[  
+                        "Not at all",
+                        "Several days",
+                        "More than half the days",
+                        "Nearly every day"
+                     ],
+                     "QuestionActivityType":0,
+                     "EMAActivity":""
+                  },
+                  {  
+                     "QuestionType":0,
+                     "Name":"PHQ4-2",
+                     "QuestionText":"Over the last 2 weeks, how often have you been bothered by the following problems?\n\n\nNot being able to stop or control worrying",
+                     "Options":[  
+                        "Not at all",
+                        "Several days",
+                        "More than half the days",
+                        "Nearly every day"
+                     ],
+                     "QuestionActivityType":0,
+                     "EMAActivity":""
+                  },
+                  {  
+                     "QuestionType":0,
+                     "Name":"PHQ4-3",
+                     "QuestionText":"Over the last 2 weeks, how often have you been bothered by the following problems?\n\n\nLittle interest or pleasure in doing things",
+                     "Options":[  
+                        "Not at all",
+                        "Several days",
+                        "More than half the days",
+                        "Nearly every day"
+                     ],
+                     "QuestionActivityType":0,
+                     "EMAActivity":""
+                  },
+                  {  
+                     "QuestionType":0,
+                     "Name":"PHQ4-4",
+                     "QuestionText":"Over the last 2 weeks, how often have you been bothered by the following problems?\n\n\nFeeling down, depressed, or hopeless",
+                     "Options":[  
+                        "Not at all",
+                        "Several days",
+                        "More than half the days",
+                        "Nearly every day"
+                     ],
+                     "QuestionActivityType":0,
+                     "EMAActivity":""
+                  }
+               ],
+               [  
+                  {  
+                     "QuestionType":1,
+                     "Name":"study_duration",
+                     "QuestionText":"On average, how many hours have you spent each day studying this week? (Round to the nearest half hour)",
+                     "Options":[  
+
+                     ],
+                     "QuestionActivityType":0,
+                     "EMAActivity":""
+                  },
+                  {  
+                     "QuestionType":1,
+                     "Name":"party_duration",
+                     "QuestionText":"How many times have you gone out partying over the past week?",
+                     "Options":[  
+
+                     ],
+                     "QuestionActivityType":0,
+                     "EMAActivity":""
+                  }
+               ]
+            ]
+         },
+         "DaysOfWeek":[  
+
+         ]
+      },
+      {  
+         "Random":"",
+         "HourOfDay":12,
+         "Minute":30,
+         "Second":0,
+         "EMADef":{  
+            "Name":"SleepDurationEMA",
+            "Prompt":"",
+            "RandomGroup":false,
+            "QuestionGroup":[  
+               [  
+                  {  
+                     "QuestionType":0,
+                     "Name":"DURATION",
+                     "QuestionText":"How many hours did you sleep last night?",
+                     "Options":[  
+                        "0 hours",
+                        "1 hours",
+                        "2 hours",
+                        "3 hours",
+                        "4 hours",
+                        "5 hours",
+                        "6 hours",
+                        "7 hours",
+                        "8 hours",
+                        "9 hours",
+                        "10 hours",
+                        "11 hours",
+                        "12 hours",
+                        "13 hours",
+                        "14 hours"
+                     ],
+                     "QuestionActivityType":0,
+                     "EMAActivity":""
+                  },
+                  {  
+                     "QuestionType":0,
+                     "Name":"RESTFULNESS",
+                     "QuestionText":"How restfull was your sleep last night?",
+                     "Options":[  
+                        "Not at all.",
+                        "A little.",
+                        "Moderately.",
+                        "Good.",
+                        "Extremely"
+                     ],
+                     "QuestionActivityType":0,
+                     "EMAActivity":""
+                  }
+               ]
+            ]
+         },
+         "DaysOfWeek":[  
+            3,
+            6,
+            5,
+            4,
+            2,
+            1
+         ]
+      }
+   ]
+}
