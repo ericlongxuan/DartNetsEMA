@@ -28,7 +28,7 @@ var common = {
             });
 
             $("#file-path-input").change(function() {
-                var filePath = "ema/" + getNameFromSelectFile($("#file-path-input").val());
+                var filePath = "ema/" + common.getNameFromSelectFile($("#file-path-input").val());
                 common.loadJsonFile(filePath);
             });
         },
