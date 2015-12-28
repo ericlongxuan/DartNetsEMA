@@ -1,23 +1,16 @@
 //**************************************
-//Init
-
-// when the DOM is loaded
-$(document).ready(function() {
-    common.compileTpl();
-    common.bindActions();
-
-    var data = sessionStorage.getItem("ema-json");
-    if (data === null) {
-        $("#load-ema-link").click();
-    }
-});
-//**************************************
-
-
-
-//**************************************
 // Functions
 var common = {
+        init: function() {
+            common.compileTpl();
+            common.bindActions();
+
+            var data = sessionStorage.getItem("ema-json");
+            if (data === null) {
+                $("#load-ema-link").click();
+            }
+        },
+
         compileTpl: function() {
             // load data
             var data = sessionStorage.getItem("ema-json");
@@ -31,12 +24,12 @@ var common = {
         bindActions: function() {
             // bind actions
             $("#load-ema-link").click(function() {
-                loadPopUp();
+                common.loadPopUp();
             });
 
             $("#file-path-input").change(function() {
                 var filePath = "ema/" + getNameFromSelectFile($("#file-path-input").val());
-                loadJsonFile(filePath);
+                common.loadJsonFile(filePath);
             });
         },
 
@@ -52,7 +45,7 @@ var common = {
                     location.reload();
                 })
                 .fail(function() {
-                    alertPopUp("No such file.\nThis system only works with a json file in the 'ema' folder.");
+                    common.alertPopUp("No such file.\nThis system only works with a json file in the 'ema' folder.");
                 });
         },
 
