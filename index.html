@@ -9,6 +9,7 @@
     <script src="js/handlebars-v4.0.5.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <!-- import js initialization and functions -->
+    <script src="js/my-site/handlerbars-helper.js"></script>
     <script src="js/my-site/common.js"></script>
     <script src="js/my-site/index.js"></script>
   </head>
@@ -16,63 +17,80 @@
     <div class="container">
       <!-- Common Top Nav -->
       <script id="common-tpl" type="text/x-handlebars-template"></script>
+
       <script type="text/javascript">
-      var localFileAccessMsg = "You should permit javascript access to local files. ANY of the following approches should work:\n"
-      + "(1) Please use --allow-file-access-from-files for chrome\n"
-      + "(See: http://blog.derraab.com/2013/05/30/start-google-chrome-with-local-file-access-on-mac-os-x/)\n"
-      + "(2) use safari or firefox to permit access to local files.\n"
-      + "(3) run a local Http server in the folder where index.html is.(for examle 'python -m SimpleHTTPServer')\n"
-      + "and open this page using localhost:8000 in browser.";
-      $.holdReady(true);
-      $.get("common.tpl")
-      .done(
-      function(response){$("#common-tpl").html(response);
-      $.holdReady(false);})
-      .fail(
-      function() {alert(localFileAccessMsg);}
-      );
+       $.get("common.tpl", function(response){
+        $("#common-tpl").html(response);
+        common.init();
+      });
+      // var localFileAccessMsg = "You should permit javascript access to local files. ANY of the following approches should work:\n"
+      // + "(1) Please use --allow-file-access-from-files for chrome\n"
+      // + "(See: http://blog.derraab.com/2013/05/30/start-google-chrome-with-local-file-access-on-mac-os-x/)\n"
+      // + "(2) use safari or firefox to permit access to local files.\n"
+      // + "(3) run a local Http server in the folder where index.html is.(for examle 'python -m SimpleHTTPServer')\n"
+      // + "and open this page using localhost:8000 in browser.";
+      // $.holdReady(true);
+      // $.get("common.tpl")
+      // .done(
+      // function(response){$("#common-tpl").html(response);
+      // $.holdReady(false);})
+      // .fail(
+      // function() {alert(localFileAccessMsg);}
+      // );
       </script>
+
       <!-- Page Content -->
       <script id="index-tpl" type="text/x-handlebars-template">
       <div class="body-content">
         <div class="col-md-3">
-          <div class="sidebar affix panel panel-primary">
-            <div class="panel-heading">Category</div>
-            <div class="panel-body">
-              <ul class="nav nav-stacked">
-                {{#each EMAScheduleList}}
-                <li><a href="#">
-                  <span class="glyphicon glyphicon-list"></span> {{EMADef.Name}}
-                </a></li>
-                {{/each}}
-              </ul>
+          <div class="sidebar affix">
+            <div class="panel panel-primary">
+              <div class="panel-heading">Category
+                <button type="text" class="btn btn-warning btn-xs btn-icon" id="cat-add-btn">
+                <span class="glyphicon glyphicon-plus"></span>
+                </button>
+              </div>
+              <div class="panel-body">
+                <ul class="nav nav-stacked">
+                  {{#each EMAScheduleList}}
+                  <li><a data-href="{{EMADef.Name}}">
+                    <span class="glyphicon glyphicon-list"></span> {{EMADef.Name}}
+                  </a></li>
+                  {{/each}}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8 main">
           {{#each EMAScheduleList}}
           <div class="panel panel-primary">
-            <div class="panel-heading">{{EMADef.Name}}</div>
+            <div class="panel-heading" id="{{EMADef.Name}}">{{EMADef.Name}}
+              <button type="text" class="btn btn-danger btn-xs btn-icon cat-del-btn" data-cat="{{EMADef.Name}}">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </div>
             <div class="panel-body">
-              <div>
-              <label for="sel1">Random:</label>
-                <select class="form-control" id="sel1">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
+              <p>
+                <label>Random:</label>
+                <select class="form-control">
+                  <option {{#compare Random "daily" operator="=="}}selected{{/compare}}>daily</option>
+                  <option {{#compare Random "weekly" operator="=="}}selected{{/compare}}>weekly</option>
+                  <option {{#compare Random "" operator="=="}}selected{{/compare}}></option>
                 </select>
-              </div>
-
-              <div>
-                HourOfDay: {{HourOfDay}}
-              </div>
-              <div>
-                Minute: {{Minute}}
-              </div>
-              <div>
-                Second: {{Second}}
-              </div>
+              </p>
+              <p>
+                <label>HourOfDay:</label>
+                <input type="text" class="form-control" value="{{HourOfDay}}"></input>
+              </p>
+              <p>
+                <label>Minute:</label>
+                <input type="text" class="form-control" value="{{Minute}}"></input>
+              </p>
+              <p>
+                <label>Second:</label>
+                <input type="text" class="form-control" value="{{Second}}"></input>
+              </p>
               
             </div>
           </div>

@@ -44,3 +44,18 @@
 .sidebar .title {
     background-color: #eee;
 }
+
+.sidebar .btn-icon {
+    margin-left: 5px;
+    float: right; 
+}
+
+.main .btn-icon {
+    margin-left: 5px;
+    float: right; 
+}
+
+a:hover {
+ cursor:pointer;
+}
+
