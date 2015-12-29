@@ -13,7 +13,6 @@
     </div>
   </nav>
 </div>
-
 <div class="modal fade alert-modal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
@@ -30,6 +29,11 @@
       <span class="btn btn-primary btn-file">
         Browse <input id="file-path-input" type="file">
       </span>
+      <form name="demoForm" id="demoForm" method="post" enctype="multipart/form-data"
+        action="javascript: common.uploadAndSubmit();">
+        <p>Upload File: <input type="file" name="file" /></p>
+        <p><input type="submit" value="Submit" /></p>
+      </form>
       <span><strong>Select a file to load. </strong></span>
       <div>
         <span class="label label-warning">Warning</span>

@@ -65,5 +65,27 @@ var common = {
             var array = file.split(regex);
             return array[array.length - 1];
         },
+
+        uploadAndSubmit: function() {
+            var form = document.forms["demoForm"];
+
+            if (form["file"].files.length > 0) {
+                // look for <input type="file" ... /> tag
+                var file = form["file"].files[0];
+                // try sending 
+                var reader = new FileReader();
+
+                reader.onloadend = function() {
+                    if (reader.error) {
+                        common.alertPopUp(reader.error);
+                    } else {
+                        alert(reader.result);
+                    }
+                }
+                reader.readAsBinaryString(file);
+            } else {
+                alert("Please choose a file.");
+            }
+        },
     }
     //**************************************
