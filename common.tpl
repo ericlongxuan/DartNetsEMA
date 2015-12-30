@@ -7,7 +7,7 @@
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
           <li><a id="load-ema-link" href="#"><i class="glyphicon glyphicon-download-alt"></i>Load EMA</a></li>
-          <li><a id="save-ema-link" href="#"><span class="glyphicon glyphicon glyphicon-share"></span>Save EMA</a></li>
+          <li><a id="save-ema-link" href="#"><span class="glyphicon glyphicon-floppy-disk"></span>Save EMA</a></li>
         </ul>
       </div>
     </div>
@@ -53,6 +53,13 @@
 <div class="modal fade load-modal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-large">
     <div class="modal-content">
+      <p><span class="label label-info">NEW</span></p>
+      <span><strong>New a blank EMA (You will lose your currently editing EMA): </strong></span>
+      <button id="btn-new-ema" type="button" class="btn btn-primary">
+        New
+      </button>
+
+      <hr>
       <p><span class="label label-info">LOCAL</span></p>
       <span><strong>Select a local file to load: </strong></span>
       <span class="btn btn-primary btn-file">
@@ -62,12 +69,14 @@
       <hr>
       <p><span class="label label-info">SERVER</span></p>
       <span><strong>Choose a file on server: </strong></span>
-      <div class="input-group">
+      <div class="row">
+        <div class="col-xs-3">
         <select class="form-control">
           <option selected>file1</option>
           <option selected>file2</option>
           <option selected>file3</option>
         </select>
+        </div>
         <button type="button" class="btn btn-primary">Load</button>
       </div>
     </div>

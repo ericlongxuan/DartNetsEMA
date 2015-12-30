@@ -27,6 +27,15 @@ var common = {
                 common.loadPopUp();
             });
 
+            $(".load-modal #btn-new-ema").click(function() {
+                var data = {
+                    "mVersion": 1,
+                    "EMAScheduleList": []
+                };
+                sessionStorage.setItem("ema-json", JSON.stringify(data));
+                location.reload();
+            })
+
             $("#file-path-input").change(function() {
                 var file = $("#file-path-input")[0].files[0];
                 common.loadJsonFile(file);
@@ -75,10 +84,14 @@ var common = {
         warningPopUpWithConfirmCancel: function(message, callback) {
             $(".warning-message").html(message);
             $(".warning-modal .btn-ok").click(
-                function(){callback();}
+                function() {
+                    callback();
+                }
             );
             $(".warning-modal .btn-cancel").click(
-                function(){$(".warning-modal").modal('hide');}
+                function() {
+                    $(".warning-modal").modal('hide');
+                }
             );
             $(".warning-modal").modal('show');
         },
@@ -90,14 +103,17 @@ var common = {
         inputPopUp: function(keys, callback) {
             $(".input-block").html("");
             keys.forEach(function(entry) {
-                $(".input-block").append("<p><label>" + entry + ":" 
-                    + "</label><input type='text' id='pop-input-" + entry + "' class='form-control'></input></p>");
+                $(".input-block").append("<p><label>" + entry + ":" + "</label><input type='text' id='pop-input-" + entry + "' class='form-control'></input></p>");
             });
             $(".input-modal .btn-ok").click(
-                function(){callback();}
+                function() {
+                    callback();
+                }
             );
             $(".input-modal .btn-cancel").click(
-                function(){$(".input-modal").modal('hide');}
+                function() {
+                    $(".input-modal").modal('hide');
+                }
             );
             $(".input-modal").modal('show');
         },

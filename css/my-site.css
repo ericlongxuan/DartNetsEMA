@@ -15,6 +15,10 @@
 	margin-bottom: 0px;
 }
 
+.load-modal button{
+    margin-left: 10px;
+}
+
 .nav .glyphicon{
 	margin-right: 5px;
 }
