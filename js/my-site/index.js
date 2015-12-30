@@ -20,12 +20,12 @@ var index = {
 
         compileTpl: function() {
             // load data
-            var data = sessionStorage.getItem("ema-json");
+            var data = JSON.parse(sessionStorage.getItem("ema-json"));
             // compile the template
             var source = $("#index-tpl").html();
             var template = Handlebars.compile(source);
             // replace the template with data
-            $("body").append(template(JSON.parse(data)));
+            $("body").append(template(data));
         },
 
         bindActions: function() {
@@ -36,6 +36,22 @@ var index = {
 
             $(".main .cat-del-btn").click(function() {
                 common.alertPopUp($(this).data("cat"));
+            });
+
+            $(".main .cat-disable-btn").click(function() {
+                var data = JSON.parse(sessionStorage.getItem("ema-json"));
+                var index = $(this).data("catindex");
+                data.EMAScheduleList[index].Disabled = true;
+                sessionStorage.setItem("ema-json", JSON.stringify(data));
+                location.reload();
+            });
+
+            $(".main .cat-enable-btn").click(function() {
+                var data = JSON.parse(sessionStorage.getItem("ema-json"));
+                var index = $(this).data("catindex");
+                data.EMAScheduleList[index].Disabled = false;
+                sessionStorage.setItem("ema-json", JSON.stringify(data));
+                location.reload();
             });
 
             $("#cat-add-btn").click(function() {

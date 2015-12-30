@@ -62,3 +62,12 @@ a:hover {
 .tab-content{
     padding-top: 10px;
 }
+
+.sidebar .disabled-cat {
+    text-decoration: line-through;
+    color: gray;
+}
+
+.main .panel.disabled-cat {
+    background: LightGray;
+}

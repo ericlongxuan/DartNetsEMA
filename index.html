@@ -53,8 +53,8 @@
               <div class="panel-body">
                 <ul class="nav nav-stacked">
                   {{#each EMAScheduleList}}
-                  <li><a data-href="{{EMADef.Name}}">
-                    <span class="glyphicon glyphicon-list"></span> {{EMADef.Name}}
+                  <li><a data-href="{{EMADef.Name}}" {{#if this.Disabled}}class="disabled-cat"{{/if}}>
+                    <span class="glyphicon glyphicon-list"></span>{{EMADef.Name}}
                   </a></li>
                   {{/each}}
                 </ul>
@@ -64,18 +64,27 @@
         </div>
         <div class="col-md-8 main">
           {{#each EMAScheduleList}}
-          <div class="panel panel-primary">
+          <div class="panel {{#if this.Disabled}}panel-default disabled-cat{{else}}panel-primary{{/if}}">
             <div class="panel-heading" id="{{EMADef.Name}}">{{EMADef.Name}}
               <button type="text" class="btn btn-danger btn-xs btn-icon cat-del-btn" data-catindex="{{@index}}"
-              data-toggle="tooltip" data-placement="bottom" title="Edit">
+              data-toggle="tooltip" data-placement="bottom" title="Delete">
               <span class="glyphicon glyphicon-trash"></span>
               </button>
+
+              {{#if this.Disabled}}
+              <button type="text" class="btn btn-info btn-xs btn-icon cat-enable-btn" data-catindex="{{@index}}"
+              data-toggle="tooltip" data-placement="bottom" title="Enable">
+              <span class="glyphicon glyphicon-eye-open"></span>
+              </button>
+              {{else}}
               <button type="text" class="btn btn-default btn-xs btn-icon cat-disable-btn" data-catindex="{{@index}}"
               data-toggle="tooltip" data-placement="bottom" title="Disable">
               <span class="glyphicon glyphicon-eye-close"></span>
               </button>
+              {{/if}}
+              
               <button type="text" class="btn btn-warning btn-xs btn-icon cat-edit-btn" data-catindex="{{@index}}"
-              data-toggle="tooltip" data-placement="bottom" title="Delete">
+              data-toggle="tooltip" data-placement="bottom" title="Edit">
               <span class="glyphicon glyphicon-pencil"></span>
               </button>
 

@@ -13,12 +13,12 @@ var common = {
 
         compileTpl: function() {
             // load data
-            var data = sessionStorage.getItem("ema-json");
+            var data = JSON.parse(sessionStorage.getItem("ema-json"));
             // compile the template
             var source = $("#common-tpl").html();
             var template = Handlebars.compile(source);
             // replace the template with data
-            $("body").append(template(JSON.parse(data)));
+            $("body").append(template(data));
         },
 
         bindActions: function() {
