@@ -4,10 +4,12 @@
     <title>Student Life EMA Manager</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap-timepicker.min.css" rel="stylesheet">
     <link href="css/my-site.css" rel="stylesheet">
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/handlebars-v4.0.5.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-timepicker.min.js"></script>
     <!-- import js initialization and functions -->
     <script src="js/my-site/handlerbars-helper.js"></script>
     <script src="js/my-site/common.js"></script>
@@ -70,7 +72,6 @@
               data-toggle="tooltip" data-placement="bottom" title="Delete">
               <span class="glyphicon glyphicon-trash"></span>
               </button>
-
               {{#if this.Disabled}}
               <button type="text" class="btn btn-info btn-xs btn-icon cat-enable-btn" data-catindex="{{@index}}"
               data-toggle="tooltip" data-placement="bottom" title="Enable">
@@ -87,8 +88,6 @@
               data-toggle="tooltip" data-placement="bottom" title="Edit">
               <span class="glyphicon glyphicon-pencil"></span>
               </button>
-
-
             </div>
             <div class="panel-body">
               <p><label class="label label-info">Schedule</label></p>
@@ -100,6 +99,7 @@
                   <option {{#compare Random "" operator="=="}}selected{{/compare}}></option>
                 </select>
               </p>
+              <!--
               <p>
                 <label>HourOfDay:</label>
                 <input type="text" class="form-control" value="{{HourOfDay}}"></input>
@@ -112,6 +112,12 @@
                 <label>Second:</label>
                 <input type="text" class="form-control" value="{{Second}}"></input>
               </p>
+              -->
+              <label>Time:</label>
+              <div class="input-group bootstrap-timepicker timepicker">
+                <input id="timepicker{{@index}}" type="text" class="form-control input-small">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+              </div>
               <hr>
               <p><label class="label label-info">EMADef</label></p>
               <p>
@@ -166,6 +172,14 @@
                     <p>
                       <label>QuestionText:</label>
                       <input type="text" class="form-control" value="{{this.QuestionText}}"></input>
+                    </p>
+                    <p>
+                      <label>QuestionActivityType:</label>
+                      <input type="text" class="form-control" value="{{this.QuestionActivityType}}"></input>
+                    </p>
+                    <p>
+                      <label>EMAActivity:</label>
+                      <input type="text" class="form-control" value="{{this.EMAActivity}}"></input>
                     </p>
                   </div>
                   {{/each}}

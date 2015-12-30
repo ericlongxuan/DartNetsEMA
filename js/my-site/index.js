@@ -4,7 +4,17 @@
 // when the DOM is loaded
 $(document).ready(function() {
     index.init();
+
+    var data = JSON.parse(sessionStorage.getItem("ema-json"));
     $('[data-toggle="tooltip"]').tooltip();
+
+    $.each(data.EMAScheduleList, function (index, schedule) {
+        $('#timepicker'+index).timepicker({
+            showMeridian: false,
+            showSeconds: true,
+            defaultTime: schedule.HourOfDay + ':' + schedule.Minute + ':' + schedule.Second,
+        });
+    });
 });
 //**************************************
 
@@ -76,7 +86,7 @@ var index = {
                     "Sure to delete?",
                     function() {
                         var data = JSON.parse(sessionStorage.getItem("ema-json"));
-                        data.EMAScheduleList.splice(index, index);
+                        data.EMAScheduleList.splice(index, 1);
                         sessionStorage.setItem("ema-json", JSON.stringify(data));
                         location.reload();
                     }
