@@ -4,6 +4,7 @@
 // when the DOM is loaded
 $(document).ready(function() {
     index.init();
+    $('[data-toggle="tooltip"]').tooltip();
 });
 //**************************************
 
@@ -36,6 +37,26 @@ var index = {
             $(".main .cat-del-btn").click(function() {
                 common.alertPopUp($(this).data("cat"));
             });
+
+            $("#cat-add-btn").click(function() {
+                common.inputPopUp(
+                    ["name"],
+                    function() {
+                        var inputName = $("#pop-input-name").val();
+                        var data = JSON.parse(sessionStorage.getItem("ema-json"));
+                        jQuery.each(data.EMAScheduleList, function() {
+                            if (this.EMADef.Name == inputName) {
+                                $(".input-modal").modal('hide');
+                                common.alertPopUp("This EMA Category Name has existed.");
+                                return false;
+                            }
+                        });
+                        data.EMAScheduleList.push(index.newEMAScheduleListItem(inputName));
+                        sessionStorage.setItem("ema-json", JSON.stringify(data));
+                        location.reload();
+                    }
+                );
+            });
         },
 
         scrollToDiv: function(divId) {
@@ -43,6 +64,24 @@ var index = {
                 scrollTop: $("#" + divId).offset().top - 70
             }, 300);
         },
+
+        //return a new EMAScheduleList item
+        newEMAScheduleListItem: function(name) {
+            return {
+                "Random": "",
+                "HourOfDay": 0,
+                "Minute": 0,
+                "Second": 0,
+                "EMADef": {
+                    "Name": name,
+                    "Prompt": "",
+                    "RandomGroup": false,
+                    "QuestionGroup": []
+                },
+                "DaysOfWeek": [
+
+                ]
+            }
+        },
     }
     //**************************************
-    

@@ -13,6 +13,7 @@
     </div>
   </nav>
 </div>
+<!-- alert modal -->
 <div class="modal fade alert-modal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
@@ -23,21 +24,37 @@
     </div>
   </div>
 </div>
-<div class="modal fade load-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-sm">
+<!-- text input modal -->
+<div class="modal fade input-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-large">
     <div class="modal-content">
+      <!-- wait js to fill in -->
+      <div class="input-block"></div>
+      <button type="text" class="btn btn-primary btn-ok">Confirm</button>
+      <button type="text" class="btn btn-default btn-cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- load modal -->
+<div class="modal fade load-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-large">
+    <div class="modal-content">
+      <p><span class="label label-info">LOCAL</span></p>
+      <span><strong>Select a local file to load: </strong></span>
       <span class="btn btn-primary btn-file">
         Browse <input id="file-path-input" type="file">
       </span>
-      <form name="demoForm" id="demoForm" method="post" enctype="multipart/form-data"
-        action="javascript: common.uploadAndSubmit();">
-        <p>Upload File: <input type="file" name="file" /></p>
-        <p><input type="submit" value="Submit" /></p>
-      </form>
-      <span><strong>Select a file to load. </strong></span>
-      <div>
-        <span class="label label-warning">Warning</span>
-        This system only works with a json file in the "ema" folder.
+      
+      <hr>
+      <p><span class="label label-info">SERVER</span></p>
+      <span><strong>Choose a file on server: </strong></span>
+      <div class="input-group">
+        <select class="form-control">
+          <option selected>file1</option>
+          <option selected>file2</option>
+          <option selected>file3</option>
+        </select>
+        <button type="button" class="btn btn-primary">Load</button>
       </div>
     </div>
   </div>

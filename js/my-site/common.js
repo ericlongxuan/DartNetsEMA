@@ -28,25 +28,42 @@ var common = {
             });
 
             $("#file-path-input").change(function() {
-                var filePath = "ema/" + common.getNameFromSelectFile($("#file-path-input").val());
-                common.loadJsonFile(filePath);
+                var file = $("#file-path-input")[0].files[0];
+                common.loadJsonFile(file);
             });
         },
 
-        loadJsonFile: function(file_name) {
+        loadJsonFile: function(file) {
             $(".load-modal").modal('hide');
-            $.ajax({
-                    type: "GET",
-                    url: file_name,
-                    cache: false, //default is true in GET method.
-                })
-                .done(function(response) {
-                    sessionStorage.setItem("ema-json", JSON.stringify(response));
+            // load from local
+            var reader = new FileReader(); //declare H5 file reader
+
+            // set reader callback - onloadend
+            reader.onloadend = function() {
+                if (reader.error) {
+                    common.alertPopUp(reader.error);
+                } else {
+                    sessionStorage.setItem("ema-json", reader.result);
                     location.reload();
-                })
-                .fail(function() {
-                    common.alertPopUp("No such file.\nThis system only works with a json file in the 'ema' folder.");
-                });
+                }
+            }
+
+            // start loading
+            reader.readAsBinaryString(file);
+
+            // load From Server, NOT Used this time
+            // $.ajax({
+            //         type: "GET",
+            //         url: "ema/" + file_name,
+            //         cache: false, //default is true in GET method.
+            //     })
+            //     .done(function(response) {
+            //         sessionStorage.setItem("ema-json", JSON.stringify(response));
+            //         location.reload();
+            //     })
+            //     .fail(function() {
+            //         common.alertPopUp("No such file.\nThis system only works with a json file in the 'ema' folder.");
+            //     });
         },
 
 
@@ -59,11 +76,19 @@ var common = {
             $(".load-modal").modal('show');
         },
 
-        getNameFromSelectFile: function(file) {
-            // ファイル名のみ取得して表示します
-            var regex = /\\|\\/;
-            var array = file.split(regex);
-            return array[array.length - 1];
+        inputPopUp: function(keys, callback) {
+            $(".input-block").html("");
+            keys.forEach(function(entry) {
+                $(".input-block").append("<p><label>" + entry + ":" 
+                    + "</label><input type='text' id='pop-input-" + entry + "' class='form-control'></input></p>");
+            });
+            $(".input-modal .btn-ok").click(
+                function(){callback();}
+            );
+            $(".input-modal .btn-cancel").click(
+                function(){$(".input-modal").modal('hide');}
+            );
+            $(".input-modal").modal('show');
         },
 
         uploadAndSubmit: function() {

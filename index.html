@@ -17,11 +17,10 @@
     <div class="container">
       <!-- Common Top Nav -->
       <script id="common-tpl" type="text/x-handlebars-template"></script>
-
       <script type="text/javascript">
-       $.get("common.tpl", function(response){
-        $("#common-tpl").html(response);
-        common.init();
+      $.get("common.tpl", function(response){
+      $("#common-tpl").html(response);
+      common.init();
       });
       // var localFileAccessMsg = "You should permit javascript access to local files. ANY of the following approches should work:\n"
       // + "(1) Please use --allow-file-access-from-files for chrome\n"
@@ -38,15 +37,16 @@
       // function() {alert(localFileAccessMsg);}
       // );
       </script>
-
-      <!-- Page Content -->
       <script id="index-tpl" type="text/x-handlebars-template">
       <div class="body-content">
+        <!-- Sidebar -->
         <div class="col-md-3">
           <div class="sidebar affix">
             <div class="panel panel-primary">
+              <!-- Sidebar Head -->
               <div class="panel-heading">Category
-                <button type="text" class="btn btn-warning btn-xs btn-icon" id="cat-add-btn">
+                <button type="text" class="btn btn-success btn-xs btn-icon" id="cat-add-btn"
+                data-toggle="tooltip" data-placement="bottom" title="Add">
                 <span class="glyphicon glyphicon-plus"></span>
                 </button>
               </div>
@@ -66,11 +66,23 @@
           {{#each EMAScheduleList}}
           <div class="panel panel-primary">
             <div class="panel-heading" id="{{EMADef.Name}}">{{EMADef.Name}}
-              <button type="text" class="btn btn-danger btn-xs btn-icon cat-del-btn" data-cat="{{EMADef.Name}}">
-                <span class="glyphicon glyphicon-trash"></span>
+              <button type="text" class="btn btn-danger btn-xs btn-icon cat-del-btn" data-catindex="{{@index}}"
+              data-toggle="tooltip" data-placement="bottom" title="Edit">
+              <span class="glyphicon glyphicon-trash"></span>
               </button>
+              <button type="text" class="btn btn-default btn-xs btn-icon cat-disable-btn" data-catindex="{{@index}}"
+              data-toggle="tooltip" data-placement="bottom" title="Disable">
+              <span class="glyphicon glyphicon-eye-close"></span>
+              </button>
+              <button type="text" class="btn btn-warning btn-xs btn-icon cat-edit-btn" data-catindex="{{@index}}"
+              data-toggle="tooltip" data-placement="bottom" title="Delete">
+              <span class="glyphicon glyphicon-pencil"></span>
+              </button>
+
+
             </div>
             <div class="panel-body">
+              <p><label class="label label-info">Schedule</label></p>
               <p>
                 <label>Random:</label>
                 <select class="form-control">
@@ -91,7 +103,66 @@
                 <label>Second:</label>
                 <input type="text" class="form-control" value="{{Second}}"></input>
               </p>
-              
+              <hr>
+              <p><label class="label label-info">EMADef</label></p>
+              <p>
+                <label>Name:</label>
+                <input type="text" class="form-control" value="{{EMADef.Name}}"></input>
+              </p>
+              <p>
+                <label>Prompt:</label>
+                <input type="text" class="form-control" value="{{EMADef.Prompt}}"></input>
+              </p>
+              <p>
+                <label>RandomGroup:</label>
+                <input type="text" class="form-control" value="{{EMADef.RandomGroup}}"></input>
+              </p>
+              <hr>
+              <!-- Tab panes -->
+              <p>
+                <p><label class="label label-info">QuestionGroup:</label></p>
+                <ul class="nav nav-tabs nav-info" role="tablist">
+                  {{#each EMADef.QuestionGroup}}
+                  {{#compare this.length 1 operator=">"}}
+                  <li role="tab" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                      Group{{math @index "+" 1}}<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      {{#each this}}
+                      <li><a href="#G{{@../index}}Q{{@index}}" role="tab" data-toggle="tab">{{Name}}</a></li>
+                      {{/each}}
+                    </ul>
+                  </li>
+                  {{else}}
+                  <li {{#compare @index "0" operator="=="}}class="active"{{/compare}}>
+                    <a href="#G{{@index}}Q0" role="tab" data-toggle="tab">Group{{math @index "+" 1}}</a>
+                  </li>
+                  {{/compare}}
+                  {{/each}}
+                </ul>
+                <div class="tab-content">
+                  {{#each EMADef.QuestionGroup}}
+                  {{#each this}}
+                  <!-- active in fot the first element. indexes of outer loop and inner loop should both be 0-->
+                  <div class="tab-pane {{#ifCond @../index "||" @index}}{{else}}active in{{/ifCond}} fade" id="G{{@../index}}Q{{@index}}">
+                    <p>
+                      <label>QuestionType:</label>
+                      <input type="text" class="form-control" value="{{this.QuestionType}}"></input>
+                    </p>
+                    <p>
+                      <label>Name:</label>
+                      <input type="text" class="form-control" value="{{this.Name}}"></input>
+                    </p>
+                    <p>
+                      <label>QuestionText:</label>
+                      <input type="text" class="form-control" value="{{this.QuestionText}}"></input>
+                    </p>
+                  </div>
+                  {{/each}}
+                  {{/each}}
+                </div>
+              </p>
             </div>
           </div>
           {{/each}}
