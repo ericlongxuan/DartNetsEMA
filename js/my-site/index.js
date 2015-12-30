@@ -34,10 +34,6 @@ var index = {
                 index.scrollToDiv($(this).data("href"));
             });
 
-            $(".main .cat-del-btn").click(function() {
-                common.alertPopUp($(this).data("cat"));
-            });
-
             $(".main .cat-disable-btn").click(function() {
                 var data = JSON.parse(sessionStorage.getItem("ema-json"));
                 var index = $(this).data("catindex");
@@ -68,6 +64,19 @@ var index = {
                             }
                         });
                         data.EMAScheduleList.push(index.newEMAScheduleListItem(inputName));
+                        sessionStorage.setItem("ema-json", JSON.stringify(data));
+                        location.reload();
+                    }
+                );
+            });
+
+            $(".main .cat-del-btn").click(function() {
+                var index = $(this).data("catindex");
+                common.warningPopUpWithConfirmCancel(
+                    "Sure to delete?",
+                    function() {
+                        var data = JSON.parse(sessionStorage.getItem("ema-json"));
+                        data.EMAScheduleList.splice(index, index);
                         sessionStorage.setItem("ema-json", JSON.stringify(data));
                         location.reload();
                     }

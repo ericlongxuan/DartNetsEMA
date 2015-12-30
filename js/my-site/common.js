@@ -72,6 +72,17 @@ var common = {
             $(".alert-modal").modal('show');
         },
 
+        warningPopUpWithConfirmCancel: function(message, callback) {
+            $(".warning-message").html(message);
+            $(".warning-modal .btn-ok").click(
+                function(){callback();}
+            );
+            $(".warning-modal .btn-cancel").click(
+                function(){$(".warning-modal").modal('hide');}
+            );
+            $(".warning-modal").modal('show');
+        },
+
         loadPopUp: function() {
             $(".load-modal").modal('show');
         },

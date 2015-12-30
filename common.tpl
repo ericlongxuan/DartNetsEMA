@@ -24,9 +24,23 @@
     </div>
   </div>
 </div>
+<!-- warning modal with confirm and cancel -->
+<div class="modal fade warning-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="warning-message"></span>
+      </div>
+      <button type="text" class="btn btn-primary btn-ok">Confirm</button>
+      <button type="text" class="btn btn-default btn-cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <!-- text input modal -->
 <div class="modal fade input-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-large">
+  <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <!-- wait js to fill in -->
       <div class="input-block"></div>
