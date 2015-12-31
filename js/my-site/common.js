@@ -100,10 +100,22 @@ var common = {
             $(".load-modal").modal('show');
         },
 
-        inputPopUp: function(keys, callback) {
+        inputPopUp: function(inputComps, callback) {
             $(".input-block").html("");
-            keys.forEach(function(entry) {
-                $(".input-block").append("<p><label>" + entry + ":" + "</label><input type='text' id='pop-input-" + entry + "' class='form-control'></input></p>");
+            $(".input-modal .modal-dialog").removeClass("modal-lg modal-sm modal-md").addClass("modal-" + inputComps.size);
+            inputComps.inputs.forEach(function(entry) {
+                if (entry.type == "text") {
+                    $(".input-block").append("<p><label>" + entry.text + ":" + "</label><input type='text' id='pop-input-" + entry.text + "' class='form-control'></input></p>");
+                } else if (entry.type == "textarea") {
+                    $(".input-block").append("<p><label>" + entry.text + ":" + "</label><textarea rows='8' id='pop-input-" + entry.text + "' class='form-control'></textarea></p>");
+                } else if (entry.type == "select") {
+                    var compStr = "<p><label>" + entry.text + ":" + "</label><select id='pop-input-" + entry.text + "' class='form-control'>";
+                    for (var i = 0; i < entry.options.length; i++) {
+                        compStr += "<option>" + entry.options[i] + "</option>";
+                    }
+                    compStr += "</select></p>";
+                    $(".input-block").append(compStr);
+                }
             });
             $(".input-modal .btn-ok").click(
                 function() {

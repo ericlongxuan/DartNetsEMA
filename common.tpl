@@ -40,7 +40,7 @@
 
 <!-- text input modal -->
 <div class="modal fade input-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog">
     <div class="modal-content">
       <!-- wait js to fill in -->
       <div class="input-block"></div>
@@ -51,7 +51,7 @@
 </div>
 <!-- load modal -->
 <div class="modal fade load-modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-large">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <p><span class="label label-info">NEW</span></p>
       <span><strong>New a blank EMA (You will lose your currently editing EMA): </strong></span>
