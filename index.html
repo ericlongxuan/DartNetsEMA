@@ -129,73 +129,81 @@
               <div class="row">
                 <div class="col-md-12">
                   <p><label class="label label-info">QuestionGroup:</label>
-                    <label>RandomGroup:</label>
-                    <input type="checkbox" name="my-checkbox" data-size="mini" {{#if EMADef.RandomGroup}}checked{{/if}}>
-                  </p>
-                  <!-- Tab panels nav-->
-                  <ul class="nav nav-tabs nav-info" role="tablist">
-                    {{#each EMADef.QuestionGroup}}
-                    {{#compare this.length 0 operator=">"}}
-                    <li role="tab" class="dropdown {{#if @index}}{{else}}active{{/if}}">
-                      <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Group{{math @index "+" 1}}<span class="caret"></span>
-                      </a>
-                      <ul class="dropdown-menu">
-                        {{#each this}}
-                        <li><a href="#EMA{{@../../index}}G{{@../index}}Q{{@index}}" role="tab" data-toggle="tab">{{Name}}</a></li>
-                        {{/each}}
-                      </ul>
-                    </li>
-                    {{else}}
-                    <li {{#if @index}}{{else}}class="active"{{/if}}>
-                      <a href="#EMA{{@../index}}G-1Q-1" role="tab" data-toggle="tab">Group{{math @index "+" 1}}</a>
-                    </li>
-                    {{/compare}}
+                  <label>RandomGroup:</label>
+                  <input type="checkbox" name="my-checkbox" data-size="mini" {{#if EMADef.RandomGroup}}checked{{/if}}>
+                  <button type="text" class="btn btn-danger btn-xs btn-icon del-group-btn" data-catindex="{{@index}}">
+                  <span class="glyphicon glyphicon-trash">Group</span></button>
+                  <button type="text" class="btn btn-danger btn-xs btn-icon del-question-btn" data-catindex="{{@index}}">
+                  <span class="glyphicon glyphicon-trash">Question</span></button>
+                  <button type="text" class="btn btn-success btn-xs btn-icon new-group-btn" data-catindex="{{@index}}">
+                  <span class="glyphicon glyphicon-plus">Group</span></button>
+                  <button type="text" class="btn btn-success btn-xs btn-icon new-question-btn" data-catindex="{{@index}}">
+                  <span class="glyphicon glyphicon-plus">QuestionToSelectedGroup</span></button>
+                </p>
+                <!-- Tab panels nav-->
+                <ul class="nav nav-tabs nav-info" role="tablist">
+                  {{#each EMADef.QuestionGroup}}
+                  {{#compare this.length 0 operator=">"}}
+                  <li role="tab" class="dropdown {{#if @index}}{{else}}active{{/if}}" data-groupindex={{@index}}>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Group{{math @index "+" 1}}<span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    {{#each this}}
+                    <li><a href="#EMA{{@../../index}}G{{@../index}}Q{{@index}}" role="tab" data-toggle="tab">{{Name}}</a></li>
                     {{/each}}
                   </ul>
-                  <!-- Tab panels body-->
-                  <div class="tab-content">
-                    {{#each EMADef.QuestionGroup}}
-                    {{#each this}}
-                    <!-- active in fot the first element. indexes of outer loop and inner loop should both be 0-->
-                    <div class="tab-pane {{#ifCond @../index "||" @index}}{{else}}active in{{/ifCond}}" id="EMA{{@../../index}}G{{@../index}}Q{{@index}}">
-                      <p>
-                        <label>QuestionType:</label>
-                        <input type="text" class="form-control" value="{{this.QuestionType}}"></input>
-                      </p>
-                      <p>
-                        <label>Name:</label>
-                        <input type="text" class="form-control" value="{{this.Name}}"></input>
-                      </p>
-                      <p>
-                        <label>QuestionText:</label>
-                        <input type="text" class="form-control" value="{{this.QuestionText}}"></input>
-                      </p>
-                      <p>
-                        <label>Options:</label>
-                        <textarea rows="8" class="form-control">{{#each this.Options}}{{#if @index}}&#13;&#10;{{/if}}{{this}}{{/each}}</textarea>
-                      </p>
-                      <p>
-                        <label>QuestionActivityType:</label>
-                        <input type="text" class="form-control" value="{{this.QuestionActivityType}}"></input>
-                      </p>
-                      <p>
-                        <label>EMAActivity:</label>
-                        <input type="text" class="form-control" value="{{this.EMAActivity}}"></input>
-                      </p>
-                    </div>
-                    {{/each}}
-                    {{/each}}
-                    <div class="tab-pane" id="EMA{{@index}}G-1Q-1"></div>
-                  </div>
+                </li>
+                {{else}}
+                <li {{#if @index}}{{else}}class="active"{{/if}}  data-groupindex={{@index}}>
+                  <a href="#EMA{{@../index}}G-1Q-1" role="tab" data-toggle="tab">Group{{math @index "+" 1}}</a>
+                </li>
+                {{/compare}}
+                {{/each}}
+              </ul>
+              <!-- Tab panels body-->
+              <div class="tab-content">
+                {{#each EMADef.QuestionGroup}}
+                {{#each this}}
+                <!-- active in fot the first element. indexes of outer loop and inner loop should both be 0-->
+                <div class="tab-pane {{#ifCond @../index "||" @index}}{{else}}active in{{/ifCond}}" id="EMA{{@../../index}}G{{@../index}}Q{{@index}}">
+                  <p>
+                    <label>QuestionType:</label>
+                    <input type="text" class="form-control" value="{{this.QuestionType}}"></input>
+                  </p>
+                  <p>
+                    <label>Name:</label>
+                    <input type="text" class="form-control" value="{{this.Name}}"></input>
+                  </p>
+                  <p>
+                    <label>QuestionText:</label>
+                    <input type="text" class="form-control" value="{{this.QuestionText}}"></input>
+                  </p>
+                  <p>
+                    <label>Options:</label>
+                    <textarea rows="8" class="form-control">{{#each this.Options}}{{#if @index}}&#13;&#10;{{/if}}{{this}}{{/each}}</textarea>
+                  </p>
+                  <p>
+                    <label>QuestionActivityType:</label>
+                    <input type="text" class="form-control" value="{{this.QuestionActivityType}}"></input>
+                  </p>
+                  <p>
+                    <label>EMAActivity:</label>
+                    <input type="text" class="form-control" value="{{this.EMAActivity}}"></input>
+                  </p>
                 </div>
+                {{/each}}
+                {{/each}}
+                <div class="tab-pane" id="EMA{{@index}}G-1Q-1"></div>
               </div>
             </div>
           </div>
-          {{/each}}
         </div>
       </div>
+      {{/each}}
     </div>
-    </script>
   </div>
+</div>
+</script>
+</div>
 </body>
 </html>

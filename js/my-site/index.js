@@ -16,11 +16,18 @@ $(document).ready(function() {
         });
     });
     $(".main .cat-ok-btn").hide();
-    $(".main input:text").attr('readonly', true);
-    $(".main textarea").attr('readonly', true);
-    $(".main select").attr("disabled", true);
-    $(".main .timepicker input").attr("disabled", true); 
-    $("[name='my-checkbox']").bootstrapSwitch("disabled", true);
+    $(".panel-body input:text").attr('readonly', true);
+    $(".panel-body textarea").attr('readonly', true);
+    $(".panel-body select").attr("disabled", true);
+    $(".panel-body .timepicker input").attr("disabled", true); 
+    $(".panel-body button").attr("disabled", true); 
+    $(".panel-body input[name='my-checkbox']").bootstrapSwitch("disabled", true);
+
+    if (sessionStorage.getItem("editing-cat-index") === null) {
+    }
+    else {
+        $(".panel-heading .cat-edit-btn[data-catindex='" + sessionStorage["editing-cat-index"] + "']").click();
+    }
 });
 //**************************************
 
@@ -106,8 +113,11 @@ var index = {
                 $("#panel-ema" + index +" select").attr("disabled", false);
                 $("#panel-ema" + index +" .timepicker input").attr("disabled", false); 
                 $("#panel-ema" + index +" input[name='my-checkbox']").bootstrapSwitch("toggleDisabled", true);
+                $("#panel-ema" + index +" .panel-body button").attr("disabled", false); 
                 $("#panel-ema" + index +" .cat-edit-btn").hide();
                 $("#panel-ema" + index +" .cat-ok-btn").show();
+                $(".panel-heading .cat-ok-btn").not("[data-catindex=" + index + "]").click();
+                sessionStorage.setItem("editing-cat-index", index);
             });
 
             $(".main .cat-ok-btn").click(function() {
@@ -117,8 +127,32 @@ var index = {
                 $("#panel-ema" + index +" select").attr("disabled", true);
                 $("#panel-ema" + index +" .timepicker input").attr("disabled", true); 
                 $("#panel-ema" + index +" input[name='my-checkbox']").bootstrapSwitch("toggleDisabled", false);
+                $("#panel-ema" + index +" .panel-body button").attr("disabled", true); 
                 $("#panel-ema" + index +" .cat-ok-btn").hide();
                 $("#panel-ema" + index +" .cat-edit-btn").show();
+            });
+
+            $(".main .del-group-btn").click(function() {
+                var catindex = $(this).data("catindex");
+                var groupindex = $("#panel-ema" + catindex +" .nav li.active").data("groupindex");
+                common.warningPopUpWithConfirmCancel(
+                    "Sure to delete Group" + (groupindex + 1) + "?",
+                    function() {
+                        var index = $(this).data("catindex");
+                        var data = JSON.parse(sessionStorage.getItem("ema-json"));
+                        data.EMAScheduleList[catindex].EMADef.QuestionGroup.splice(groupindex, 1);
+                        sessionStorage.setItem("ema-json", JSON.stringify(data));
+                        location.reload();
+                    }
+                );
+            });
+
+            $(".main .new-group-btn").click(function() {
+                var index = $(this).data("catindex");
+                var data = JSON.parse(sessionStorage.getItem("ema-json"));
+                data.EMAScheduleList[index].EMADef.QuestionGroup.push([]);
+                sessionStorage.setItem("ema-json", JSON.stringify(data));
+                location.reload();
             });
         },
 
@@ -143,7 +177,8 @@ var index = {
                 },
                 "DaysOfWeek": [
 
-                ]
+                ],
+                "Disabled": false
             }
         },
     }
