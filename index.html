@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/bootstrap-timepicker.min.css" rel="stylesheet">
+    <link href="css/bootstrap-switch.min.css" rel="stylesheet">
     <link href="css/my-site.css" rel="stylesheet">
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/handlebars-v4.0.5.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-timepicker.min.js"></script>
+    <script src="js/bootstrap-switch.min.js"></script>
     <!-- import js initialization and functions -->
     <script src="js/my-site/handlerbars-helper.js"></script>
     <script src="js/my-site/common.js"></script>
@@ -66,7 +68,7 @@
         </div>
         <div class="col-md-8 main">
           {{#each EMAScheduleList}}
-          <div class="panel {{#if this.Disabled}}panel-default disabled-cat{{else}}panel-primary{{/if}}">
+          <div class="panel {{#if this.Disabled}}panel-default disabled-cat{{else}}panel-primary{{/if}}" id="panel-ema{{@index}}">
             <div class="panel-heading" id="{{EMADef.Name}}">{{EMADef.Name}}
               <button type="text" class="btn btn-danger btn-xs btn-icon cat-del-btn" data-catindex="{{@index}}"
               data-toggle="tooltip" data-placement="bottom" title="Delete">
@@ -83,109 +85,109 @@
               <span class="glyphicon glyphicon-eye-close"></span>
               </button>
               {{/if}}
-              
+              <button type="text" class="btn btn-success btn-xs btn-icon cat-ok-btn" data-catindex="{{@index}}"
+              data-toggle="tooltip" data-placement="bottom" title="Confirm">
+              <span class="glyphicon glyphicon-ok"></span>
+              </button>
               <button type="text" class="btn btn-warning btn-xs btn-icon cat-edit-btn" data-catindex="{{@index}}"
               data-toggle="tooltip" data-placement="bottom" title="Edit">
               <span class="glyphicon glyphicon-pencil"></span>
               </button>
             </div>
             <div class="panel-body">
-              <p><label class="label label-info">Schedule</label></p>
-              <p>
-                <label>Random:</label>
-                <select class="form-control">
-                  <option {{#compare Random "daily" operator="=="}}selected{{/compare}}>daily</option>
-                  <option {{#compare Random "weekly" operator="=="}}selected{{/compare}}>weekly</option>
-                  <option {{#compare Random "" operator="=="}}selected{{/compare}}></option>
-                </select>
-              </p>
-              <!--
-              <p>
-                <label>HourOfDay:</label>
-                <input type="text" class="form-control" value="{{HourOfDay}}"></input>
-              </p>
-              <p>
-                <label>Minute:</label>
-                <input type="text" class="form-control" value="{{Minute}}"></input>
-              </p>
-              <p>
-                <label>Second:</label>
-                <input type="text" class="form-control" value="{{Second}}"></input>
-              </p>
-              -->
-              <label>Time:</label>
-              <div class="input-group bootstrap-timepicker timepicker">
-                <input id="timepicker{{@index}}" type="text" class="form-control input-small">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-              </div>
-              <hr>
-              <p><label class="label label-info">EMADef</label></p>
-              <p>
-                <label>Name:</label>
-                <input type="text" class="form-control" value="{{EMADef.Name}}"></input>
-              </p>
-              <p>
-                <label>Prompt:</label>
-                <input type="text" class="form-control" value="{{EMADef.Prompt}}"></input>
-              </p>
-              <p>
-                <label>RandomGroup:</label>
-                <input type="text" class="form-control" value="{{EMADef.RandomGroup}}"></input>
-              </p>
-              <hr>
-              <!-- Tab panes -->
-              <p>
-                <p><label class="label label-info">QuestionGroup:</label></p>
-                <ul class="nav nav-tabs nav-info" role="tablist">
-                  {{#each EMADef.QuestionGroup}}
-                  {{#compare this.length 1 operator=">"}}
-                  <li role="tab" class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                      Group{{math @index "+" 1}}<span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                      {{#each this}}
-                      <li><a href="#G{{@../index}}Q{{@index}}" role="tab" data-toggle="tab">{{Name}}</a></li>
-                      {{/each}}
-                    </ul>
-                  </li>
-                  {{else}}
-                  <li {{#compare @index "0" operator="=="}}class="active"{{/compare}}>
-                    <a href="#G{{@index}}Q0" role="tab" data-toggle="tab">Group{{math @index "+" 1}}</a>
-                  </li>
-                  {{/compare}}
-                  {{/each}}
-                </ul>
-                <div class="tab-content">
-                  {{#each EMADef.QuestionGroup}}
-                  {{#each this}}
-                  <!-- active in fot the first element. indexes of outer loop and inner loop should both be 0-->
-                  <div class="tab-pane {{#ifCond @../index "||" @index}}{{else}}active in{{/ifCond}} fade" id="G{{@../index}}Q{{@index}}">
-                    <p>
-                      <label>QuestionType:</label>
-                      <input type="text" class="form-control" value="{{this.QuestionType}}"></input>
-                    </p>
-                    <p>
-                      <label>Name:</label>
-                      <input type="text" class="form-control" value="{{this.Name}}"></input>
-                    </p>
-                    <p>
-                      <label>QuestionText:</label>
-                      <input type="text" class="form-control" value="{{this.QuestionText}}"></input>
-                    </p>
-                    <p>
-                      <label>QuestionActivityType:</label>
-                      <input type="text" class="form-control" value="{{this.QuestionActivityType}}"></input>
-                    </p>
-                    <p>
-                      <label>EMAActivity:</label>
-                      <input type="text" class="form-control" value="{{this.EMAActivity}}"></input>
-                    </p>
+              <div class="row">
+                <div class="col-md-6">
+                  <p><label class="label label-info">Schedule</label></p>
+                  <p>
+                    <label>Random:</label>
+                    <select class="form-control">
+                      <option {{#compare Random "daily" operator="=="}}selected{{/compare}}>daily</option>
+                      <option {{#compare Random "weekly" operator="=="}}selected{{/compare}}>weekly</option>
+                      <option {{#compare Random "" operator="=="}}selected{{/compare}}></option>
+                    </select>
+                  </p>
+                  <label>Time:</label>
+                  <div class="input-group bootstrap-timepicker timepicker">
+                    <input id="timepicker{{@index}}" type="text" class="form-control input-small">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                   </div>
-                  {{/each}}
-                  {{/each}}
                 </div>
-              </p>
+                <div class="col-md-6">
+                  <p><label class="label label-info">EMADef</label></p>
+                  <p>
+                    <label>Name:</label>
+                    <input type="text" class="form-control" value="{{EMADef.Name}}"></input>
+                  </p>
+                  <p>
+                    <label>Prompt:</label>
+                    <input type="text" class="form-control" value="{{EMADef.Prompt}}"></input>
+                  </p>
+                </div>
+              </div>
+              
+              <!-- Tab panes -->
+              <hr>
+              <div class="row">
+                <div class="col-md-12">
+                  <p><label class="label label-info">QuestionGroup:</label>
+                    <label>RandomGroup:</label>
+                    <input type="checkbox" name="my-checkbox" data-size="mini" {{#if EMADef.RandomGroup}}checked{{/if}}>
+                  </p>
+                  <ul class="nav nav-tabs nav-info" role="tablist">
+                    {{#each EMADef.QuestionGroup}}
+                    {{#compare this.length 1 operator=">"}}
+                    <li role="tab" class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        Group{{math @index "+" 1}}<span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu">
+                        {{#each this}}
+                        <li><a href="#G{{@../index}}Q{{@index}}" role="tab" data-toggle="tab">{{Name}}</a></li>
+                        {{/each}}
+                      </ul>
+                    </li>
+                    {{else}}
+                    <li {{#compare @index "0" operator="=="}}class="active"{{/compare}}>
+                      <a href="#G{{@index}}Q0" role="tab" data-toggle="tab">Group{{math @index "+" 1}}</a>
+                    </li>
+                    {{/compare}}
+                    {{/each}}
+                  </ul>
+                  <div class="tab-content">
+                    {{#each EMADef.QuestionGroup}}
+                    {{#each this}}
+                    <!-- active in fot the first element. indexes of outer loop and inner loop should both be 0-->
+                    <div class="tab-pane {{#ifCond @../index "||" @index}}{{else}}active in{{/ifCond}} fade" id="G{{@../index}}Q{{@index}}">
+                      <p>
+                        <label>QuestionType:</label>
+                        <input type="text" class="form-control" value="{{this.QuestionType}}"></input>
+                      </p>
+                      <p>
+                        <label>Name:</label>
+                        <input type="text" class="form-control" value="{{this.Name}}"></input>
+                      </p>
+                      <p>
+                        <label>QuestionText:</label>
+                        <input type="text" class="form-control" value="{{this.QuestionText}}"></input>
+                      </p>
+                      <p>
+                        <label>Options:</label>
+                        <textarea rows="8" class="form-control">{{#each this.Options}}{{#if @index}}&#13;&#10;{{/if}}{{this}}{{/each}}</textarea>
+                      </p>
+                      <p>
+                        <label>QuestionActivityType:</label>
+                        <input type="text" class="form-control" value="{{this.QuestionActivityType}}"></input>
+                      </p>
+                      <p>
+                        <label>EMAActivity:</label>
+                        <input type="text" class="form-control" value="{{this.EMAActivity}}"></input>
+                      </p>
+                    </div>
+                    {{/each}}
+                    {{/each}}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           {{/each}}

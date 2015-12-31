@@ -8,13 +8,19 @@ $(document).ready(function() {
     var data = JSON.parse(sessionStorage.getItem("ema-json"));
     $('[data-toggle="tooltip"]').tooltip();
 
-    $.each(data.EMAScheduleList, function (index, schedule) {
-        $('#timepicker'+index).timepicker({
+    $.each(data.EMAScheduleList, function(index, schedule) {
+        $('#timepicker' + index).timepicker({
             showMeridian: false,
             showSeconds: true,
             defaultTime: schedule.HourOfDay + ':' + schedule.Minute + ':' + schedule.Second,
         });
     });
+    $(".main .cat-ok-btn").hide();
+    $(".main input:text").attr('readonly', true);
+    $(".main textarea").attr('readonly', true);
+    $(".main select").attr("disabled", true);
+    $(".main .timepicker input").attr("disabled", true); 
+    $("[name='my-checkbox']").bootstrapSwitch("disabled", true);
 });
 //**************************************
 
@@ -91,6 +97,28 @@ var index = {
                         location.reload();
                     }
                 );
+            });
+
+            $(".main .cat-edit-btn").click(function() {
+                var index = $(this).data("catindex");
+                $("#panel-ema" + index +" input:text").attr('readonly', false);
+                $("#panel-ema" + index +" textarea").attr('readonly', false);
+                $("#panel-ema" + index +" select").attr("disabled", false);
+                $("#panel-ema" + index +" .timepicker input").attr("disabled", false); 
+                $("#panel-ema" + index +" input[name='my-checkbox']").bootstrapSwitch("toggleDisabled", true);
+                $("#panel-ema" + index +" .cat-edit-btn").hide();
+                $("#panel-ema" + index +" .cat-ok-btn").show();
+            });
+
+            $(".main .cat-ok-btn").click(function() {
+                var index = $(this).data("catindex");
+                $("#panel-ema" + index +" input:text").attr('readonly', true);
+                $("#panel-ema" + index +" textarea").attr('readonly', true);
+                $("#panel-ema" + index +" select").attr("disabled", true);
+                $("#panel-ema" + index +" .timepicker input").attr("disabled", true); 
+                $("#panel-ema" + index +" input[name='my-checkbox']").bootstrapSwitch("toggleDisabled", false);
+                $("#panel-ema" + index +" .cat-ok-btn").hide();
+                $("#panel-ema" + index +" .cat-edit-btn").show();
             });
         },
 

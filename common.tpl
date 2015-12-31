@@ -7,7 +7,7 @@
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
           <li><a id="load-ema-link" href="#"><i class="glyphicon glyphicon-download-alt"></i>Load EMA</a></li>
-          <li><a id="save-ema-link" href="#"><span class="glyphicon glyphicon-floppy-disk"></span>Save EMA</a></li>
+          <li><a id="save-ema-link" href="#"><span class="glyphicon glyphicon-share"></span>Save EMA</a></li>
         </ul>
       </div>
     </div>
