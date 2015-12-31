@@ -40,8 +40,13 @@ var common = {
                 var file = $("#file-path-input")[0].files[0];
                 common.loadJsonFile(file);
             });
+
+            $("#save-ema-link").click(function() {
+                common.saveJsonFile();
+            });
         },
 
+        //H5 file reader
         loadJsonFile: function(file) {
             $(".load-modal").modal('hide');
             // load from local
@@ -73,6 +78,11 @@ var common = {
             //     .fail(function() {
             //         common.alertPopUp("No such file.\nThis system only works with a json file in the 'ema' folder.");
             //     });
+        },
+
+        saveJsonFile: function(filename) {
+            var dataJson = sessionStorage.getItem("ema-json");
+            alert(dataJson);
         },
 
 
