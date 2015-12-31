@@ -19,13 +19,11 @@ $(document).ready(function() {
     $(".panel-body input:text").attr('readonly', true);
     $(".panel-body textarea").attr('readonly', true);
     $(".panel-body select").attr("disabled", true);
-    $(".panel-body .timepicker input").attr("disabled", true); 
-    $(".panel-body button").attr("disabled", true); 
+    $(".panel-body .timepicker input").attr("disabled", true);
+    $(".panel-body button").attr("disabled", true);
     $(".panel-body input[name='my-checkbox']").bootstrapSwitch("disabled", true);
 
-    if (sessionStorage.getItem("editing-cat-index") === null) {
-    }
-    else {
+    if (sessionStorage.getItem("editing-cat-index") === null) {} else {
         $(".panel-heading .cat-edit-btn[data-catindex='" + sessionStorage["editing-cat-index"] + "']").click();
     }
 });
@@ -74,8 +72,15 @@ var index = {
             });
 
             $("#cat-add-btn").click(function() {
-                common.inputPopUp(
-                    ["name"],
+                common.inputPopUp({
+                        "size": "sm",
+                        "inputs": [{
+                            "text": "name",
+                            "type": "text",
+                            "options": [],
+                            "required": true
+                        }]
+                    },
                     function() {
                         var inputName = $("#pop-input-name").val();
                         var data = JSON.parse(sessionStorage.getItem("ema-json"));
@@ -108,37 +113,36 @@ var index = {
 
             $(".main .cat-edit-btn").click(function() {
                 var index = $(this).data("catindex");
-                $("#panel-ema" + index +" input:text").attr('readonly', false);
-                $("#panel-ema" + index +" textarea").attr('readonly', false);
-                $("#panel-ema" + index +" select").attr("disabled", false);
-                $("#panel-ema" + index +" .timepicker input").attr("disabled", false); 
-                $("#panel-ema" + index +" input[name='my-checkbox']").bootstrapSwitch("toggleDisabled", true);
-                $("#panel-ema" + index +" .panel-body button").attr("disabled", false); 
-                $("#panel-ema" + index +" .cat-edit-btn").hide();
-                $("#panel-ema" + index +" .cat-ok-btn").show();
+                $("#panel-ema" + index + " input:text").attr('readonly', false);
+                $("#panel-ema" + index + " textarea").attr('readonly', false);
+                $("#panel-ema" + index + " select").attr("disabled", false);
+                $("#panel-ema" + index + " .timepicker input").attr("disabled", false);
+                $("#panel-ema" + index + " input[name='my-checkbox']").bootstrapSwitch("toggleDisabled", true);
+                $("#panel-ema" + index + " .panel-body button").attr("disabled", false);
+                $("#panel-ema" + index + " .cat-edit-btn").hide();
+                $("#panel-ema" + index + " .cat-ok-btn").show();
                 $(".panel-heading .cat-ok-btn").not("[data-catindex=" + index + "]").click();
                 sessionStorage.setItem("editing-cat-index", index);
             });
 
             $(".main .cat-ok-btn").click(function() {
                 var index = $(this).data("catindex");
-                $("#panel-ema" + index +" input:text").attr('readonly', true);
-                $("#panel-ema" + index +" textarea").attr('readonly', true);
-                $("#panel-ema" + index +" select").attr("disabled", true);
-                $("#panel-ema" + index +" .timepicker input").attr("disabled", true); 
-                $("#panel-ema" + index +" input[name='my-checkbox']").bootstrapSwitch("toggleDisabled", false);
-                $("#panel-ema" + index +" .panel-body button").attr("disabled", true); 
-                $("#panel-ema" + index +" .cat-ok-btn").hide();
-                $("#panel-ema" + index +" .cat-edit-btn").show();
+                $("#panel-ema" + index + " input:text").attr('readonly', true);
+                $("#panel-ema" + index + " textarea").attr('readonly', true);
+                $("#panel-ema" + index + " select").attr("disabled", true);
+                $("#panel-ema" + index + " .timepicker input").attr("disabled", true);
+                $("#panel-ema" + index + " input[name='my-checkbox']").bootstrapSwitch("toggleDisabled", false);
+                $("#panel-ema" + index + " .panel-body button").attr("disabled", true);
+                $("#panel-ema" + index + " .cat-ok-btn").hide();
+                $("#panel-ema" + index + " .cat-edit-btn").show();
             });
 
             $(".main .del-group-btn").click(function() {
                 var catindex = $(this).data("catindex");
-                var groupindex = $("#panel-ema" + catindex +" .nav li.active").data("groupindex");
+                var groupindex = $("#panel-ema" + catindex + " .nav li.active").data("groupindex");
                 common.warningPopUpWithConfirmCancel(
                     "Sure to delete Group" + (groupindex + 1) + "?",
                     function() {
-                        var index = $(this).data("catindex");
                         var data = JSON.parse(sessionStorage.getItem("ema-json"));
                         data.EMAScheduleList[catindex].EMADef.QuestionGroup.splice(groupindex, 1);
                         sessionStorage.setItem("ema-json", JSON.stringify(data));
@@ -154,6 +158,80 @@ var index = {
                 sessionStorage.setItem("ema-json", JSON.stringify(data));
                 location.reload();
             });
+
+            $(".main .new-question-btn").click(function() {
+                var catindex = $(this).data("catindex");
+                var groupindex = $("#panel-ema" + catindex + " .nav li.active").data("groupindex");
+                common.inputPopUp({
+                        "size": "md",
+                        "inputs": [{
+                            "text": "QuestionType",
+                            "type": "select",
+                            "options": [0, 1],
+                            "required": true
+                        }, {
+                            "text": "Name",
+                            "type": "text",
+                            "options": [],
+                            "required": true
+                        }, {
+                            "text": "QuestionText",
+                            "type": "text",
+                            "options": [],
+                            "required": true
+                        }, {
+                            "text": "Options",
+                            "type": "textarea",
+                            "options": [],
+                            "required": true
+                        }, {
+                            "text": "QuestionActivityType",
+                            "type": "select",
+                            "options": [0, 1],
+                            "required": true
+                        }, {
+                            "text": "EMAActivity",
+                            "type": "select",
+                            "options": ["", "PSM", "PAM"],
+                            "required": true
+                        }, ]
+                    },
+
+                    function() {
+                        var newQuestion = {
+                            "QuestionType": $("#pop-input-QuestionType").val(),
+                            "Name": $("#pop-input-Name").val(),
+                            "QuestionText": $("#pop-input-QuestionText").val(),
+                            "Options": $("#pop-input-Options").val().split('\n'),
+                            "QuestionActivityType": $("#pop-input-QuestionActivityType").val(),
+                            "EMAActivity": $("#pop-input-EMAActivity").val()
+                        };
+                        var data = JSON.parse(sessionStorage.getItem("ema-json"));
+                        data.EMAScheduleList[catindex].EMADef.QuestionGroup[groupindex].push(newQuestion);
+                        sessionStorage.setItem("ema-json", JSON.stringify(data));
+                        location.reload();
+                    }
+                );
+            });
+
+            $(".main .del-question-btn").click(function() {
+                var catindex = $(this).data("catindex");
+                var groupindex = $("#panel-ema" + catindex + " .nav li.active").data("groupindex");
+                var questionindex = $("#panel-ema" + catindex + " .nav li.active li.active").data("questionindex");
+                if (questionindex === undefined)
+                    questionindex = 0;
+
+                common.warningPopUpWithConfirmCancel(
+                    "Sure to delete Question#" + (questionindex + 1) + " from Group" + (groupindex + 1) + "?",
+                    function() {
+                        var data = JSON.parse(sessionStorage.getItem("ema-json"));
+                        data.EMAScheduleList[catindex].EMADef.QuestionGroup[groupindex].splice(questionindex, 1);
+                        sessionStorage.setItem("ema-json", JSON.stringify(data));
+                        location.reload();
+                    }
+                );
+            });
+
         },
 
         scrollToDiv: function(divId) {

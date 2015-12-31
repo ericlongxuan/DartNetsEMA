@@ -149,7 +149,9 @@
                   </a>
                   <ul class="dropdown-menu">
                     {{#each this}}
-                    <li><a href="#EMA{{@../../index}}G{{@../index}}Q{{@index}}" role="tab" data-toggle="tab">{{Name}}</a></li>
+                    <li data-questionindex="{{@index}}">
+                      <a href="#EMA{{@../../index}}G{{@../index}}Q{{@index}}" role="tab" data-toggle="tab">{{Name}}</a>
+                    </li>
                     {{/each}}
                   </ul>
                 </li>
