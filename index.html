@@ -125,7 +125,6 @@
                 </div>
               </div>
               
-              <!-- Tab panes -->
               <hr>
               <div class="row">
                 <div class="col-md-12">
@@ -133,31 +132,32 @@
                     <label>RandomGroup:</label>
                     <input type="checkbox" name="my-checkbox" data-size="mini" {{#if EMADef.RandomGroup}}checked{{/if}}>
                   </p>
+                  <!-- Tab panels nav-->
                   <ul class="nav nav-tabs nav-info" role="tablist">
                     {{#each EMADef.QuestionGroup}}
-                    {{#compare this.length 1 operator=">"}}
-                    <li role="tab" class="dropdown">
-                      <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                        Group{{math @index "+" 1}}<span class="caret"></span>
+                    {{#compare this.length 0 operator=">"}}
+                    <li role="tab" class="dropdown {{#if @index}}{{else}}active{{/if}}">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Group{{math @index "+" 1}}<span class="caret"></span>
                       </a>
                       <ul class="dropdown-menu">
                         {{#each this}}
-                        <li><a href="#G{{@../index}}Q{{@index}}" role="tab" data-toggle="tab">{{Name}}</a></li>
+                        <li><a href="#EMA{{@../../index}}G{{@../index}}Q{{@index}}" role="tab" data-toggle="tab">{{Name}}</a></li>
                         {{/each}}
                       </ul>
                     </li>
                     {{else}}
-                    <li {{#compare @index "0" operator="=="}}class="active"{{/compare}}>
-                      <a href="#G{{@index}}Q0" role="tab" data-toggle="tab">Group{{math @index "+" 1}}</a>
+                    <li {{#if @index}}{{else}}class="active"{{/if}}>
+                      <a href="#EMA{{@../index}}G-1Q-1" role="tab" data-toggle="tab">Group{{math @index "+" 1}}</a>
                     </li>
                     {{/compare}}
                     {{/each}}
                   </ul>
+                  <!-- Tab panels body-->
                   <div class="tab-content">
                     {{#each EMADef.QuestionGroup}}
                     {{#each this}}
                     <!-- active in fot the first element. indexes of outer loop and inner loop should both be 0-->
-                    <div class="tab-pane {{#ifCond @../index "||" @index}}{{else}}active in{{/ifCond}} fade" id="G{{@../index}}Q{{@index}}">
+                    <div class="tab-pane {{#ifCond @../index "||" @index}}{{else}}active in{{/ifCond}}" id="EMA{{@../../index}}G{{@../index}}Q{{@index}}">
                       <p>
                         <label>QuestionType:</label>
                         <input type="text" class="form-control" value="{{this.QuestionType}}"></input>
@@ -185,6 +185,7 @@
                     </div>
                     {{/each}}
                     {{/each}}
+                    <div class="tab-pane" id="EMA{{@index}}G-1Q-1"></div>
                   </div>
                 </div>
               </div>
