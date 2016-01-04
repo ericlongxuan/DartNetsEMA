@@ -122,6 +122,10 @@ var index = {
                 $("#panel-ema" + index + " .cat-edit-btn").hide();
                 $("#panel-ema" + index + " .cat-ok-btn").show();
                 $(".panel-heading .cat-ok-btn").not("[data-catindex=" + index + "]").click();
+                var data = JSON.parse(sessionStorage.getItem("ema-json"));
+                if (data.EMAScheduleList[index].EMADef.QuestionGroup.length == 0) {
+                    $("#panel-ema" + index + " .panel-body .new-question-btn").attr("disabled", true);
+                };
                 sessionStorage.setItem("editing-cat-index", index);
             });
 
