@@ -100,7 +100,7 @@
                   <p><label class="label label-info">Schedule</label></p>
                   <p>
                     <label>Random:</label>
-                    <select class="form-control">
+                    <select class="form-control" name="random">
                       <option {{#compare Random "daily" operator="=="}}selected{{/compare}}>daily</option>
                       <option {{#compare Random "weekly" operator="=="}}selected{{/compare}}>weekly</option>
                       <option {{#compare Random "" operator="=="}}selected{{/compare}}></option>
@@ -116,11 +116,11 @@
                   <p><label class="label label-info">EMADef</label></p>
                   <p>
                     <label>Name:</label>
-                    <input type="text" class="form-control" value="{{EMADef.Name}}"></input>
+                    <input type="text" class="form-control" name="emaname" value="{{EMADef.Name}}"></input>
                   </p>
                   <p>
                     <label>Prompt:</label>
-                    <input type="text" class="form-control" value="{{EMADef.Prompt}}"></input>
+                    <input type="text" class="form-control" name="prompt" value="{{EMADef.Prompt}}"></input>
                   </p>
                 </div>
               </div>
@@ -130,7 +130,7 @@
                 <div class="col-md-12">
                   <p><label class="label label-info">QuestionGroup:</label>
                   <label>RandomGroup:</label>
-                  <input type="checkbox" name="my-checkbox" data-size="mini" {{#if EMADef.RandomGroup}}checked{{/if}}>
+                  <input type="checkbox" name="randomgroup" data-size="mini" {{#if EMADef.RandomGroup}}checked{{/if}}>
                   <button type="text" class="btn btn-danger btn-xs btn-icon del-group-btn" data-catindex="{{@index}}">
                   <span class="glyphicon glyphicon-trash">Group</span></button>
                   <button type="text" class="btn btn-danger btn-xs btn-icon del-question-btn" data-catindex="{{@index}}">
@@ -170,27 +170,37 @@
                 <div class="tab-pane {{#ifCond @../index "||" @index}}{{else}}active in{{/ifCond}}" id="EMA{{@../../index}}G{{@../index}}Q{{@index}}">
                   <p>
                     <label>QuestionType:</label>
-                    <input type="text" class="form-control" value="{{this.QuestionType}}"></input>
+                    <select class="form-control" name="questiontype">
+                      <option {{#compare QuestionType 0 operator="=="}}selected{{/compare}}>0</option>
+                      <option {{#compare QuestionType 1 operator="=="}}selected{{/compare}}>1</option>
+                    </select>
                   </p>
                   <p>
                     <label>Name:</label>
-                    <input type="text" class="form-control" value="{{this.Name}}"></input>
+                    <input type="text" class="form-control" name="questionname" value="{{Name}}"></input>
                   </p>
                   <p>
                     <label>QuestionText:</label>
-                    <input type="text" class="form-control" value="{{this.QuestionText}}"></input>
+                    <input type="text" class="form-control" name="questiontext" value="{{QuestionText}}"></input>
                   </p>
                   <p>
                     <label>Options:</label>
-                    <textarea rows="8" class="form-control">{{#each this.Options}}{{#if @index}}&#13;&#10;{{/if}}{{this}}{{/each}}</textarea>
+                    <textarea rows="8" class="form-control" name="options">{{#each Options}}{{#if @index}}&#13;&#10;{{/if}}{{this}}{{/each}}</textarea>
                   </p>
                   <p>
                     <label>QuestionActivityType:</label>
-                    <input type="text" class="form-control" value="{{this.QuestionActivityType}}"></input>
+                    <select class="form-control" name="activitytype">
+                      <option {{#compare QuestionActivityType 0 operator="=="}}selected{{/compare}}>0</option>
+                      <option {{#compare QuestionActivityType 1 operator="=="}}selected{{/compare}}>1</option>
+                    </select>
                   </p>
                   <p>
                     <label>EMAActivity:</label>
-                    <input type="text" class="form-control" value="{{this.EMAActivity}}"></input>
+                    <select class="form-control" name="activity">
+                      <option {{#compare EMAActivity "" operator="=="}}selected{{/compare}}></option>
+                      <option {{#compare EMAActivity "PSM" operator="=="}}selected{{/compare}}>PSM</option>
+                      <option {{#compare EMAActivity "PAM" operator="=="}}selected{{/compare}}>PAM</option>
+                    </select>
                   </p>
                 </div>
                 {{/each}}

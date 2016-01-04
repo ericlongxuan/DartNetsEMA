@@ -32,11 +32,13 @@ var common = {
                     "mVersion": 1,
                     "EMAScheduleList": []
                 };
+                sessionStorage.removeItem("editing-cat-index");
                 sessionStorage.setItem("ema-json", JSON.stringify(data));
                 location.reload();
             })
 
             $("#file-path-input").change(function() {
+                sessionStorage.removeItem("editing-cat-index");
                 var file = $("#file-path-input")[0].files[0];
                 common.loadJsonFile(file);
             });

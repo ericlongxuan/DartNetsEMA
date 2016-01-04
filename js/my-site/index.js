@@ -21,7 +21,7 @@ $(document).ready(function() {
     $(".panel-body select").attr("disabled", true);
     $(".panel-body .timepicker input").attr("disabled", true);
     $(".panel-body button").attr("disabled", true);
-    $(".panel-body input[name='my-checkbox']").bootstrapSwitch("disabled", true);
+    $(".panel-body input[name='randomgroup']").bootstrapSwitch("disabled", true);
 
     if (sessionStorage.getItem("editing-cat-index") === null) {} else {
         $(".panel-heading .cat-edit-btn[data-catindex='" + sessionStorage["editing-cat-index"] + "']").click();
@@ -56,17 +56,17 @@ var index = {
             });
 
             $(".main .cat-disable-btn").click(function() {
-                var data = JSON.parse(sessionStorage.getItem("ema-json"));
-                var index = $(this).data("catindex");
-                data.EMAScheduleList[index].Disabled = true;
+                var catindex = $(this).data("catindex");
+                var data = index.saveCurrent(catindex);
+                data.EMAScheduleList[catindex].Disabled = true;
                 sessionStorage.setItem("ema-json", JSON.stringify(data));
                 location.reload();
             });
 
             $(".main .cat-enable-btn").click(function() {
-                var data = JSON.parse(sessionStorage.getItem("ema-json"));
-                var index = $(this).data("catindex");
-                data.EMAScheduleList[index].Disabled = false;
+                var catindex = $(this).data("catindex");
+                var data = index.saveCurrent(catindex);
+                data.EMAScheduleList[catindex].Disabled = false;
                 sessionStorage.setItem("ema-json", JSON.stringify(data));
                 location.reload();
             });
@@ -99,12 +99,13 @@ var index = {
             });
 
             $(".main .cat-del-btn").click(function() {
-                var index = $(this).data("catindex");
+                var catindex = $(this).data("catindex");
+                index.saveCurrent(catindex);
                 common.warningPopUpWithConfirmCancel(
                     "Sure to delete?",
                     function() {
                         var data = JSON.parse(sessionStorage.getItem("ema-json"));
-                        data.EMAScheduleList.splice(index, 1);
+                        data.EMAScheduleList.splice(catindex, 1);
                         sessionStorage.setItem("ema-json", JSON.stringify(data));
                         location.reload();
                     }
@@ -117,7 +118,7 @@ var index = {
                 $("#panel-ema" + index + " textarea").attr('readonly', false);
                 $("#panel-ema" + index + " select").attr("disabled", false);
                 $("#panel-ema" + index + " .timepicker input").attr("disabled", false);
-                $("#panel-ema" + index + " input[name='my-checkbox']").bootstrapSwitch("toggleDisabled", true);
+                $("#panel-ema" + index + " input[name='randomgroup']").bootstrapSwitch("toggleDisabled", false);
                 $("#panel-ema" + index + " .panel-body button").attr("disabled", false);
                 $("#panel-ema" + index + " .cat-edit-btn").hide();
                 $("#panel-ema" + index + " .cat-ok-btn").show();
@@ -130,24 +131,26 @@ var index = {
             });
 
             $(".main .cat-ok-btn").click(function() {
-                var index = $(this).data("catindex");
-                $("#panel-ema" + index + " input:text").attr('readonly', true);
-                $("#panel-ema" + index + " textarea").attr('readonly', true);
-                $("#panel-ema" + index + " select").attr("disabled", true);
-                $("#panel-ema" + index + " .timepicker input").attr("disabled", true);
-                $("#panel-ema" + index + " input[name='my-checkbox']").bootstrapSwitch("toggleDisabled", false);
-                $("#panel-ema" + index + " .panel-body button").attr("disabled", true);
-                $("#panel-ema" + index + " .cat-ok-btn").hide();
-                $("#panel-ema" + index + " .cat-edit-btn").show();
+                var catindex = $(this).data("catindex");
+                index.saveCurrent(catindex);
+
+                $("#panel-ema" + catindex + " input:text").attr('readonly', true);
+                $("#panel-ema" + catindex + " textarea").attr('readonly', true);
+                $("#panel-ema" + catindex + " select").attr("disabled", true);
+                $("#panel-ema" + catindex + " .timepicker input").attr("disabled", true);
+                $("#panel-ema" + catindex + " input[name='randomgroup']").bootstrapSwitch("toggleDisabled", true);
+                $("#panel-ema" + catindex + " .panel-body button").attr("disabled", true);
+                $("#panel-ema" + catindex + " .cat-ok-btn").hide();
+                $("#panel-ema" + catindex + " .cat-edit-btn").show();
             });
 
             $(".main .del-group-btn").click(function() {
                 var catindex = $(this).data("catindex");
+                var data = index.saveCurrent(catindex);
                 var groupindex = $("#panel-ema" + catindex + " .nav li.active").data("groupindex");
                 common.warningPopUpWithConfirmCancel(
                     "Sure to delete Group" + (groupindex + 1) + "?",
                     function() {
-                        var data = JSON.parse(sessionStorage.getItem("ema-json"));
                         data.EMAScheduleList[catindex].EMADef.QuestionGroup.splice(groupindex, 1);
                         sessionStorage.setItem("ema-json", JSON.stringify(data));
                         location.reload();
@@ -156,15 +159,16 @@ var index = {
             });
 
             $(".main .new-group-btn").click(function() {
-                var index = $(this).data("catindex");
-                var data = JSON.parse(sessionStorage.getItem("ema-json"));
-                data.EMAScheduleList[index].EMADef.QuestionGroup.push([]);
+                var catindex = $(this).data("catindex");
+                var data = index.saveCurrent(catindex);
+                data.EMAScheduleList[catindex].EMADef.QuestionGroup.push([]);
                 sessionStorage.setItem("ema-json", JSON.stringify(data));
                 location.reload();
             });
 
             $(".main .new-question-btn").click(function() {
                 var catindex = $(this).data("catindex");
+                var data = index.saveCurrent(catindex);
                 var groupindex = $("#panel-ema" + catindex + " .nav li.active").data("groupindex");
                 common.inputPopUp({
                         "size": "md",
@@ -210,7 +214,6 @@ var index = {
                             "QuestionActivityType": $("#pop-input-QuestionActivityType").val(),
                             "EMAActivity": $("#pop-input-EMAActivity").val()
                         };
-                        var data = JSON.parse(sessionStorage.getItem("ema-json"));
                         data.EMAScheduleList[catindex].EMADef.QuestionGroup[groupindex].push(newQuestion);
                         sessionStorage.setItem("ema-json", JSON.stringify(data));
                         location.reload();
@@ -220,6 +223,7 @@ var index = {
 
             $(".main .del-question-btn").click(function() {
                 var catindex = $(this).data("catindex");
+                var data = index.saveCurrent(catindex);
                 var groupindex = $("#panel-ema" + catindex + " .nav li.active").data("groupindex");
                 var questionindex = $("#panel-ema" + catindex + " .nav li.active li.active").data("questionindex");
                 if (questionindex === undefined)
@@ -228,7 +232,6 @@ var index = {
                 common.warningPopUpWithConfirmCancel(
                     "Sure to delete Question#" + (questionindex + 1) + " from Group" + (groupindex + 1) + "?",
                     function() {
-                        var data = JSON.parse(sessionStorage.getItem("ema-json"));
                         data.EMAScheduleList[catindex].EMADef.QuestionGroup[groupindex].splice(questionindex, 1);
                         sessionStorage.setItem("ema-json", JSON.stringify(data));
                         location.reload();
@@ -263,5 +266,38 @@ var index = {
                 "Disabled": false
             }
         },
+
+        saveCurrent: function(index) {
+            var data = JSON.parse(sessionStorage.getItem("ema-json"));
+            data.EMAScheduleList[index].Random = $("#panel-ema" + index + " select[name='random']").val();
+            data.EMAScheduleList[index].HourOfDay = $("#panel-ema" + index + " #timepicker" + index).data('timepicker').hour;
+            data.EMAScheduleList[index].Minute = $("#panel-ema" + index + " #timepicker" + index).data('timepicker').minute;
+            data.EMAScheduleList[index].Second = $("#panel-ema" + index + " #timepicker" + index).data('timepicker').meridian;
+            data.EMAScheduleList[index].EMADef.Name = $("#panel-ema" + index + " input[name='emaname']").val();
+            data.EMAScheduleList[index].EMADef.Prompt = $("#panel-ema" + index + " input[name='prompt']").val();
+            data.EMAScheduleList[index].EMADef.RandomGroup = $("#panel-ema" + index + " input[name='randomgroup']").prop('checked');
+
+            for (var i = data.EMAScheduleList[index].EMADef.QuestionGroup.length - 1; i >= 0; i--) {
+                var group = data.EMAScheduleList[index].EMADef.QuestionGroup[i];
+                for (var j = group.length - 1; j >= 0; j--) {
+                    data.EMAScheduleList[index].EMADef.QuestionGroup[i][j].QuestionType = $("#EMA" + index + "G" + i + "Q" + j + " select[name='questiontype']").val();
+                    data.EMAScheduleList[index].EMADef.QuestionGroup[i][j].Name = $("#EMA" + index + "G" + i + "Q" + j + " input[name='questionname']").val();
+                    data.EMAScheduleList[index].EMADef.QuestionGroup[i][j].QuestionText = $("#EMA" + index + "G" + i + "Q" + j + " input[name='questiontext']").val();
+                    var lines = $("#EMA" + index + "G" + i + "Q" + j + " textarea[name='options']").val().split(/\n/);
+                    var options = [];
+                    for (var k = 0; k < lines.length; k++) {
+                        // only push this line if it contains a non whitespace character.
+                        if (/\S/.test(lines[k])) {
+                            options.push($.trim(lines[k]));
+                        }
+                    }
+                    data.EMAScheduleList[index].EMADef.QuestionGroup[i][j].Options = options;
+                    data.EMAScheduleList[index].EMADef.QuestionGroup[i][j].QuestionActivityType = $("#EMA" + index + "G" + i + "Q" + j + " select[name='activitytype']").val();
+                    data.EMAScheduleList[index].EMADef.QuestionGroup[i][j].EMAActivity = $("#EMA" + index + "G" + i + "Q" + j + " select[name='activity']").val();
+                };
+            };
+            sessionStorage.setItem("ema-json", JSON.stringify(data));
+            return data;
+        }
     }
     //**************************************
