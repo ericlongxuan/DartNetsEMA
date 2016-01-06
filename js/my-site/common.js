@@ -29,7 +29,8 @@ var common = {
                 $.ajax({
                         method: "GET",
                         //url: "http://dartnetsdma.appspot.com/get_file_list/" + 5,
-                        url: "http://127.0.0.1:5000/get_file_list/" + 5,
+                        //url: "http://dartnetsdma.appspot.com/get_file_list/" + 5,
+                        url: "http://ericlongxuan.pythonanywhere.com/get_file_list/" + 5,
                         cache: false, //default is true in GET method.
                     })
                     .done(function(response) {
@@ -43,6 +44,7 @@ var common = {
                         common.loadPopUp();
                     })
                     .fail(function() {
+                        $("body").css("cursor", "default");
                         $(".load-modal").modal('hide');
                         common.alertPopUp("communication error with server. Try again.");
                     });
@@ -77,6 +79,11 @@ var common = {
                 common.inputPopUp({
                         "size": "sm",
                         "inputs": [{
+                            "text": "mVersion",
+                            "type": "text",
+                            "options": [],
+                            "required": true
+                        }, {
                             "text": "filename",
                             "type": "text",
                             "options": [],
@@ -89,13 +96,14 @@ var common = {
                         $("body").css("cursor", "progress");
                         //get file list from server
                         var data = JSON.parse(sessionStorage.getItem("ema-json"));
-                        data.mVersion += 1;
+                        data.mVersion = $("#pop-input-mVersion").val();
                         var dataJson = JSON.stringify(data);
                         sessionStorage.setItem("ema-json", dataJson);
                         $.ajax({
                                 method: "POST",
                                 //url: "http://dartnetsdma.appspot.com/get_file_list",
-                                url: "http://127.0.0.1:5000/save_file/" + inputName,
+                                //url: "http://dartnetsdma.appspot.com/save_file/" + inputName,
+                                url: "http://ericlongxuan.pythonanywhere.com/save_file/" + inputName,
                                 data: {
                                     content: dataJson
                                 }
@@ -110,6 +118,7 @@ var common = {
                                 location.reload();
                             })
                             .fail(function() {
+                                $("body").css("cursor", "default");
                                 $(".input-modal").modal('hide');
                                 common.alertPopUp("communication error with server. Try again.");
                             });
@@ -118,8 +127,10 @@ var common = {
                 );
                 var currentdate = new Date();
                 var data = JSON.parse(sessionStorage.getItem("ema-json"));
+                $("#pop-input-mVersion").attr("placeholder", parseInt(data.mVersion) + 1);
+                $("#pop-input-mVersion").val(parseInt(data.mVersion) + 1);
                 var datetime = currentdate.getDate() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getFullYear();
-                var defaultFilename = 'ema-(v' + data.mVersion + ")" + datetime;
+                var defaultFilename = 'ema(v' + (parseInt(data.mVersion) + 1) + ")" + datetime;
                 $("#pop-input-filename").attr("placeholder", defaultFilename);
                 $("#pop-input-filename").val(defaultFilename);
                 $("#pop-input-filename").wrap("<div class='input-group'></div>");
@@ -152,7 +163,8 @@ var common = {
             $("body").css("cursor", "progress");
             $.ajax({
                     method: "GET",
-                    url: "http://127.0.0.1:5000/ema/" + file,
+                    //url: "http://dartnetsdma.appspot.com/ema/" + file,
+                    url: "http://ericlongxuan.pythonanywhere.com/ema/" + file,
                     cache: false, //default is true in GET method.
                 })
                 .done(function(response) {
@@ -161,6 +173,7 @@ var common = {
                     location.reload();
                 })
                 .fail(function() {
+                    $("body").css("cursor", "default");
                     common.alertPopUp("communication error with server. Try again.");
                 });
         },
