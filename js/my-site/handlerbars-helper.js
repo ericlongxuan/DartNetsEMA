@@ -73,3 +73,11 @@ Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
             return options.inverse(this);
     }
 });
+
+// register if in array feature
+Handlebars.registerHelper('ifIn', function(elem, list, options) {
+  if(list.indexOf(elem) > -1) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});

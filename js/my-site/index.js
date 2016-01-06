@@ -21,7 +21,9 @@ $(document).ready(function() {
     $(".panel-body select").attr("disabled", true);
     $(".panel-body .timepicker input").attr("disabled", true);
     $(".panel-body button").attr("disabled", true);
+    $(".panel-body input:checkbox").click(function(){return false;});
     $(".panel-body input[name='randomgroup']").bootstrapSwitch("disabled", true);
+
 
     if (sessionStorage.getItem("editing-cat-index") === null) {} else {
         $(".panel-heading .cat-edit-btn[data-catindex='" + sessionStorage["editing-cat-index"] + "']").click();
@@ -118,7 +120,8 @@ var index = {
                 $("#panel-ema" + index + " textarea").attr('readonly', false);
                 $("#panel-ema" + index + " select").attr("disabled", false);
                 $("#panel-ema" + index + " .timepicker input").attr("disabled", false);
-                $("#panel-ema" + index + " input[name='randomgroup']").bootstrapSwitch("toggleDisabled", false);
+                $("#panel-ema" + index + " input:checkbox").unbind("click");
+                $("#panel-ema" + index + " input[name='randomgroup']").bootstrapSwitch("disabled", false);
                 $("#panel-ema" + index + " .panel-body button").attr("disabled", false);
                 $("#panel-ema" + index + " .cat-edit-btn").hide();
                 $("#panel-ema" + index + " .cat-ok-btn").show();
@@ -138,7 +141,8 @@ var index = {
                 $("#panel-ema" + catindex + " textarea").attr('readonly', true);
                 $("#panel-ema" + catindex + " select").attr("disabled", true);
                 $("#panel-ema" + catindex + " .timepicker input").attr("disabled", true);
-                $("#panel-ema" + catindex + " input[name='randomgroup']").bootstrapSwitch("toggleDisabled", true);
+                $("#panel-ema" + catindex + " input:checkbox").click(function(){return false});
+                $("#panel-ema" + catindex + " input[name='randomgroup']").bootstrapSwitch("disabled", true);
                 $("#panel-ema" + catindex + " .panel-body button").attr("disabled", true);
                 $("#panel-ema" + catindex + " .cat-ok-btn").hide();
                 $("#panel-ema" + catindex + " .cat-edit-btn").show();
@@ -275,6 +279,13 @@ var index = {
             data.EMAScheduleList[index].Second = $("#panel-ema" + index + " #timepicker" + index).data('timepicker').meridian;
             data.EMAScheduleList[index].EMADef.Name = $("#panel-ema" + index + " input[name='emaname']").val();
             data.EMAScheduleList[index].EMADef.Prompt = $("#panel-ema" + index + " input[name='prompt']").val();
+            var daysOfWeek = [];
+            for (var i = 1; i <= 7; i++) {
+                if ($("#panel-ema" + index + " input[name='day" + i + "']").prop('checked')) {
+                    daysOfWeek.push(i);
+                };
+            };
+            data.EMAScheduleList[index].DaysOfWeek = daysOfWeek;
             data.EMAScheduleList[index].EMADef.RandomGroup = $("#panel-ema" + index + " input[name='randomgroup']").prop('checked');
 
             for (var i = data.EMAScheduleList[index].EMADef.QuestionGroup.length - 1; i >= 0; i--) {
