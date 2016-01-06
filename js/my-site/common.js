@@ -24,7 +24,28 @@ var common = {
         bindActions: function() {
             // bind actions
             $("#load-ema-link").click(function() {
-                common.loadPopUp();
+                $("body").css("cursor", "progress");
+                //get file list from server
+                $.ajax({
+                        method: "GET",
+                        //url: "http://dartnetsdma.appspot.com/get_file_list/" + 5,
+                        url: "http://127.0.0.1:5000/get_file_list/" + 5,
+                        cache: false, //default is true in GET method.
+                    })
+                    .done(function(response) {
+                        $("body").css("cursor", "default");
+                        var files = JSON.parse(response);
+                        $('select#files-on-server-sel option').remove();
+                        for (var i = 0; i < files.length; i++) {
+                            $("select#files-on-server-sel").append($("<option>").val(files[i].name).text(
+                                files[i].name + " (modified at: " + common.formatTime(files[i].modify_time) + ", size:" + files[i].size + "B)"));
+                        }
+                        common.loadPopUp();
+                    })
+                    .fail(function() {
+                        $(".load-modal").modal('hide');
+                        common.alertPopUp("communication error with server. Try again.");
+                    });
             });
 
             $(".load-modal #btn-new-ema").click(function() {
@@ -35,21 +56,80 @@ var common = {
                 sessionStorage.removeItem("editing-cat-index");
                 sessionStorage.setItem("ema-json", JSON.stringify(data));
                 location.reload();
-            })
+            });
+
+            $(".load-modal #btn-load-from-server").click(function() {
+                var file = $("#files-on-server-sel").val();
+                common.loadServerJsonFile(file);
+            });
 
             $("#file-path-input").change(function() {
                 sessionStorage.removeItem("editing-cat-index");
                 var file = $("#file-path-input")[0].files[0];
-                common.loadJsonFile(file);
+                common.loadLocalJsonFile(file);
             });
 
-            $("#save-ema-link").click(function() {
+            $("#save-ema-local-link").click(function() {
                 common.saveJsonFile();
+            });
+
+            $("#save-ema-server-link").click(function() {
+                common.inputPopUp({
+                        "size": "sm",
+                        "inputs": [{
+                            "text": "filename",
+                            "type": "text",
+                            "options": [],
+                            "required": true
+                        }]
+                    },
+                    function() {
+                        $(".main .cat-ok-btn").click();
+                        var inputName = $("#pop-input-filename").val() + ".json";
+                        $("body").css("cursor", "progress");
+                        //get file list from server
+                        var data = JSON.parse(sessionStorage.getItem("ema-json"));
+                        data.mVersion += 1;
+                        var dataJson = JSON.stringify(data);
+                        sessionStorage.setItem("ema-json", dataJson);
+                        $.ajax({
+                                method: "POST",
+                                //url: "http://dartnetsdma.appspot.com/get_file_list",
+                                url: "http://127.0.0.1:5000/save_file/" + inputName,
+                                data: {
+                                    content: dataJson
+                                }
+                            })
+                            .done(function(response) {
+                                $("body").css("cursor", "default");
+                                var res = JSON.parse(response);
+                                $(".input-modal").modal('hide');
+                                if (res.status == "fail") {
+                                    common.alertPopUp(res.reason);
+                                }
+                                location.reload();
+                            })
+                            .fail(function() {
+                                $(".input-modal").modal('hide');
+                                common.alertPopUp("communication error with server. Try again.");
+                            });
+
+                    }
+                );
+                var currentdate = new Date();
+                var data = JSON.parse(sessionStorage.getItem("ema-json"));
+                var datetime = currentdate.getDate() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getFullYear();
+                var defaultFilename = 'ema-(v' + data.mVersion + ")" + datetime;
+                $("#pop-input-filename").attr("placeholder", defaultFilename);
+                $("#pop-input-filename").val(defaultFilename);
+                $("#pop-input-filename").wrap("<div class='input-group'></div>");
+                //$("#pop-input-filename").closest("p").addClass("input-group");
+                $("#pop-input-filename").after("<span class='input-group-addon'>.json</span>");
             });
         },
 
         //H5 file reader
-        loadJsonFile: function(file) {
+        loadLocalJsonFile: function(file) {
             $(".load-modal").modal('hide');
             // load from local
             var reader = new FileReader(); //declare H5 file reader
@@ -66,31 +146,39 @@ var common = {
 
             // start loading
             reader.readAsBinaryString(file);
+        },
 
-            // load From Server, NOT Used this time
-            // $.ajax({
-            //         type: "GET",
-            //         url: "ema/" + file_name,
-            //         cache: false, //default is true in GET method.
-            //     })
-            //     .done(function(response) {
-            //         sessionStorage.setItem("ema-json", JSON.stringify(response));
-            //         location.reload();
-            //     })
-            //     .fail(function() {
-            //         common.alertPopUp("No such file.\nThis system only works with a json file in the 'ema' folder.");
-            //     });
+        loadServerJsonFile: function(file) {
+            $("body").css("cursor", "progress");
+            $.ajax({
+                    method: "GET",
+                    url: "http://127.0.0.1:5000/ema/" + file,
+                    cache: false, //default is true in GET method.
+                })
+                .done(function(response) {
+                    $("body").css("cursor", "default");
+                    sessionStorage.setItem("ema-json", response);
+                    location.reload();
+                })
+                .fail(function() {
+                    common.alertPopUp("communication error with server. Try again.");
+                });
         },
 
         saveJsonFile: function() {
+            $(".main .cat-ok-btn").click();
+            //var data = JSON.parse(sessionStorage.getItem("ema-json"));
+            //data.mVersion += 1;
+            //var dataJson = JSON.stringify(data);
+            //sessionStorage.setItem("ema-json", dataJson);
             var dataJson = sessionStorage.getItem("ema-json");
             window.URL = window.URL || window.webkitURL;
             var blob = new Blob([dataJson], {
                 type: 'text/plain;charset=utf-8'
             });
             var currentdate = new Date();
-            var datetime = currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear();
-            filename = 'ema-' + datetime + '.json';
+            var datetime = currentdate.getDate() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getFullYear();
+            var filename = 'ema-' + datetime + '.json';
             var type = blob.type;
             var force_saveable_type = 'application/octet-stream';
             if (type && type != force_saveable_type) {
@@ -185,5 +273,29 @@ var common = {
                 alert("Please choose a file.");
             }
         },
+
+        formatTime: function(unixTimestamp) {
+            var dt = new Date(unixTimestamp * 1000);
+            var year = dt.getFullYear();
+            var month = dt.getMonth() + 1;
+            var day = dt.getDate();
+            var hours = dt.getHours();
+            var minutes = dt.getMinutes();
+            var seconds = dt.getSeconds();
+
+            // the above dt.get...() functions return a single digit
+            // so I prepend the zero here when needed
+            if (hours < 10)
+                hours = '0' + hours;
+
+            if (minutes < 10)
+                minutes = '0' + minutes;
+
+            if (seconds < 10)
+                seconds = '0' + seconds;
+
+            return month + "/" + day + "/" + year + " " + hours + ":" + minutes + ":" + seconds;
+        }
+
     }
     //**************************************

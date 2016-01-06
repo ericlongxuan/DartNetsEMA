@@ -7,7 +7,8 @@
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
           <li><a id="load-ema-link" href="#"><i class="glyphicon glyphicon-download-alt"></i>Load EMA</a></li>
-          <li><a id="save-ema-link" href="#"><span class="glyphicon glyphicon-share"></span>Save EMA</a></li>
+          <li><a id="save-ema-local-link" href="#"><span class="glyphicon glyphicon-share"></span>Save To Local</a></li>
+          <li><a id="save-ema-server-link" href="#"><span class="glyphicon glyphicon-cloud-upload"></span>Save To Server</a></li>
         </ul>
       </div>
     </div>
@@ -70,14 +71,14 @@
       <p><span class="label label-info">SERVER</span></p>
       <span><strong>Choose a file on server: </strong></span>
       <div class="row">
-        <div class="col-xs-3">
-        <select class="form-control">
+        <div class="col-xs-6">
+        <select class="form-control" id="files-on-server-sel">
           <option selected>file1</option>
           <option selected>file2</option>
           <option selected>file3</option>
         </select>
         </div>
-        <button type="button" class="btn btn-primary">Load</button>
+        <button type="button" class="btn btn-primary" id="btn-load-from-server">Load</button>
       </div>
     </div>
   </div>
