@@ -280,7 +280,7 @@ var index = {
             data.EMAScheduleList[index].EMADef.Name = $("#panel-ema" + index + " input[name='emaname']").val();
             data.EMAScheduleList[index].EMADef.Prompt = $("#panel-ema" + index + " input[name='prompt']").val();
             var daysOfWeek = [];
-            for (var i = 1; i <= 7; i++) {
+            for (var i = 0; i <= 6; i++) {
                 if ($("#panel-ema" + index + " input[name='day" + i + "']").prop('checked')) {
                     daysOfWeek.push(i);
                 };
